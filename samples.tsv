@@ -1,0 +1,6 @@
+sample	fasta	role
+REF	data/assemblies/ref.fa	train
+TRAIN2	data/assemblies/train2.fa	train
+TRAIN3	data/assemblies/train3.fa	train
+TRAIN4	data/assemblies/train4.fa	train
+TEST	data/assemblies/test.fa	test
