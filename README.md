@@ -12,12 +12,7 @@ training assemblies
        v
 Minigraph-Cactus
        |
-       +---- full GFA
-       |
-       v
-current vg autoindex (sr-giraffe)
-       |
-       +---- Giraffe GBZ + mapping indexes
+       +---- full GFA / GBZ
        |
 held-out assembly
        |
@@ -153,15 +148,13 @@ uses `--noSplit --permissiveContigFilter` because deliberately small inputs can
 otherwise be filtered aggressively by Minigraph-Cactus. Revisit these flags for
 full chromosome-scale studies.
 
-## Run
+## Run on WSL2 / Ubuntu
 
-### WSL2 / Ubuntu quick start
-
-This repository is designed to run on **WSL2 Ubuntu on an x86-64 Windows machine**. Keep the clone inside the Linux filesystem (for example `~/projects/`) rather than `/mnt/c/...` because bioinformatics workflows create many intermediate files. Minigraph-Cactus is currently x86-64 oriented.
-
-From a fresh WSL2 terminal:
+This repository is designed for **WSL2 Ubuntu on an x86-64 Windows machine**. Keep the clone inside the Linux filesystem, for example `~/projects/`, rather than `/mnt/c/...`.
 
 ```bash
+mkdir -p ~/projects
+cd ~/projects
 git clone https://github.com/aaravshandilya/PangenomeHUBOPipeline-ModifiedPaper.git
 cd PangenomeHUBOPipeline-ModifiedPaper
 chmod +x setup_wsl.sh
@@ -169,32 +162,28 @@ chmod +x setup_wsl.sh
 conda activate pangenome-hubo
 ```
 
-Then put your FASTA assemblies in `data/assemblies/`, edit `samples.tsv`, and edit the reference/holdout names in `config.yaml`.
+Put your FASTA assemblies in `data/assemblies/`, then edit `samples.tsv` and `config.yaml`.
 
-Dry-run the DAG first:
+Dry run:
 
 ```bash
 snakemake -n -p --software-deployment-method conda --cores 4
 ```
 
-Run the pipeline:
+Run:
 
 ```bash
 snakemake -p --software-deployment-method conda --cores 8
 ```
 
-The first real run can take a while because Snakemake will create the pinned Cactus, vg, and Python environments.
-
-## Why vg indexing is a separate rule
-
-Minigraph-Cactus is used strictly as the **graph builder**. The workflow asks it for the full GFA, then runs `vg autoindex --workflow sr-giraffe` in the pinned vg environment. This avoids coupling the mapping indexes to the version of vg bundled inside the Cactus package and follows the current vg GFA-to-Giraffe indexing workflow.
+On older Snakemake releases, `--use-conda` can be used instead of `--software-deployment-method conda`.
 
 ## Main outputs
 
 ```text
 results/pangenome/cactus/smallpg.full.gfa.gz
+results/pangenome/cactus/smallpg.full.gbz
 results/pangenome/pangenome.full.gfa
-results/pangenome/vg_index.giraffe.gbz
 
 results/annotation/annotated.gfa
 results/annotation/node_depths.tsv
