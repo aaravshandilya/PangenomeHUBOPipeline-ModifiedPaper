@@ -1,0 +1,39 @@
+# Snakemake / Conda
+.snakemake/
+.conda/
+__pycache__/
+*.pyc
+
+# Pipeline outputs
+results/**
+!results/.gitkeep
+logs/**
+!logs/.gitkeep
+
+# Large bioinformatics files
+*.gfa
+*.gfa.gz
+*.gbz
+*.dist
+*.min
+*.zipcodes
+*.gam
+*.gaf
+*.fastq
+*.fq
+*.bam
+*.bai
+*.paf
+*.hal
+*.vg
+
+# Keep source/example FASTA paths out of Git by default.
+# Remove these lines if you intentionally want to version a tiny public dataset.
+data/assemblies/*.fa
+data/assemblies/*.fasta
+data/assemblies/*.fna
+
+# OS / editors
+.DS_Store
+.vscode/
+.idea/
