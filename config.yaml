@@ -1,0 +1,76 @@
+# Input manifest. Each FASTA should represent one haploid assembly/haplotype.
+samples_tsv: "samples.tsv"
+
+# One sample is excluded from graph construction and used as the target genome.
+holdout_sample: "TEST"
+
+pangenome:
+  # Must be the name of one TRAIN sample in samples.tsv.
+  reference: "REF"
+  out_dir: "results/pangenome/cactus"
+  out_name: "smallpg"
+  jobstore: "results/pangenome/cactus_jobstore"
+  threads: 16
+
+  # Useful for deliberately small experimental inputs. For production-scale
+  # chromosome assemblies, revisit these flags.
+  extra_args: "--noSplit --permissiveContigFilter"
+
+reads:
+  # Mirrors the PGSA paper's typical simulated short-read depth.
+  coverage: 30
+  read_length: 150
+  substitution_error_rate: 0.001
+  seed: 1
+
+mapping:
+  threads: 8
+  giraffe_args: ""
+
+annotation:
+  # qpg filters weak/secondary mappings; this threshold is configurable.
+  min_mapq: 10
+
+copy_number:
+  # qpg_like implements the same basic idea as qpg/tag_gfa_copy_numbers.pl:
+  # infer a one-copy depth and divide each node depth by it.
+  mode: "qpg_like"
+  min_depth: 0.1
+  depth_div: 4.0
+  fit_step: 0.1
+
+  # qpg's Perl script historically uses offset=0.4 and min_copy=0.45.
+  # For HUBO experiments, 0.0/0.0 is a cleaner default because absent nodes
+  # should be allowed to have approximately zero desired visits.
+  offset: 0.0
+  min_copy: 0.0
+  max_copy: 10.0
+
+subgraph:
+  # "auto": choose a small branch/repeat-rich neighborhood.
+  # "whole": pass the full annotated graph into the HUBO builder.
+  mode: "auto"
+  radius: 2
+  min_nodes: 3
+  max_nodes: 10
+  repeat_copy_threshold: 1.5
+
+hubo:
+  # Lambda_1 in Eq. (9) of the non-variational HUBO paper.
+  lambda_edge: 10.0
+
+  # "auto" => round(sum of biological-node copy numbers), minimum 1.
+  # Or replace with an integer.
+  walk_length: "auto"
+
+  # Safety guards. Start small, then scale deliberately.
+  max_variables: 40
+  max_terms: 2000000
+  coefficient_tolerance: 1.0e-12
+
+validation:
+  random_tests: 250
+  seed: 7
+  # Exhaustively enumerate only when q <= this many binary variables.
+  exhaustive_limit: 18
+  tolerance: 1.0e-8
