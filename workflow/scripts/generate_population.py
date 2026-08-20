@@ -2,7 +2,7 @@ from pathlib import Path
 import shlex, subprocess
 
 exe = str(snakemake.input.exe)
-out_fa = Path(snakemake.output.pop)
+out_fa = Path(snakemake.output.population_fasta)
 out_manifest = Path(snakemake.output.manifest)
 out_fa.parent.mkdir(parents=True, exist_ok=True)
 
