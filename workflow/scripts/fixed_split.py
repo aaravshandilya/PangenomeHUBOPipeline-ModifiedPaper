@@ -1,7 +1,7 @@
 from pathlib import Path
 import random
 
-pop = Path(snakemake.input.pop)
+population_fasta = Path(snakemake.input.population_fasta)
 out_split = Path(snakemake.output.split)
 out_train = Path(snakemake.output.train_fofn)
 out_test = Path(snakemake.output.test_fofn)
@@ -11,7 +11,7 @@ for p in [out_split, out_train, out_test, out_heldout, out_concat]:
     p.parent.mkdir(parents=True, exist_ok=True)
 
 records=[]; name=None; seq=[]
-with pop.open() as fh:
+with population_fasta.open() as fh:
     for line in fh:
         line=line.strip()
         if not line: continue
@@ -36,7 +36,7 @@ test = candidates[n_train:n_train+n_test]
 hidx = int(snakemake.params.heldout_index)
 heldout = test[hidx]
 
-gdir = pop.parent/'genomes'
+gdir = population_fasta.parent/'genomes'
 def path_for(name): return (gdir/f'{name}.fa').resolve()
 
 with out_train.open('w') as f:
