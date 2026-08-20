@@ -1,54 +1,73 @@
-# Input manifest. Each FASTA should represent one haploid assembly/haplotype.
-samples_tsv: "samples.tsv"
+# Professor-guided comparative PGSA -> HUBO experiment.
+# One synthetic population and one read set are shared across ALL graph builders.
 
-# One sample is excluded from graph construction and used as the target genome.
-holdout_sample: "TEST"
+qpg:
+  repo_url: "https://github.com/jkbonfield/qpg.git"
+  commit: "f0c624f0c326c12626258dab6707d1671bb098b8"
 
-pangenome:
-  # Must be the name of one TRAIN sample in samples.tsv.
-  reference: "REF"
-  out_dir: "results/pangenome/cactus"
-  out_name: "smallpg"
-  jobstore: "results/pangenome/cactus_jobstore"
-  threads: 16
+  # Current "Medium" synthetic-population parameters from qpg/config_base.sh.
+  # Population size = 100; generations = 10; nominal sequence length = 10 kb.
+  genome_opts: "-S 0.005 -C 0.001 -N 0.01 -n 0.01 -A 0.0005 -L 0.0001 -T 0.0001 -I 0.0002 -l 10000 -P 100 -G 10"
+  population_seed: 104
 
-  # Useful for deliberately small experimental inputs. For production-scale
-  # chromosome assemblies, revisit these flags.
-  extra_args: "--noSplit --permissiveContigFilter"
+population:
+  # The same 40 training genomes feed all three builders.
+  n_training: 40
+  n_test: 10
+  split_seed: 104
+  # Which member of the fixed 10-genome test set is used for the first run.
+  heldout_index: 0
+
+builders:
+  names:
+    - minigraph
+    - minigraph_cactus
+    - pggb
+
+  minigraph:
+    threads: 8
+    # Mirrors qpg/run_sim_create_gfa.sh.
+    args: "-l 1000 -d 10000 -n 5,20 -cxggs"
+
+  minigraph_cactus:
+    threads: 8
+    # Appropriate for deliberately small synthetic chromosomes.
+    args: "--noSplit --permissiveContigFilter"
+
+  pggb:
+    threads: 8
+    map_pct_id: 90
+    segment_length: 1000
 
 reads:
-  # Mirrors the PGSA paper's typical simulated short-read depth.
+  # Generated ONCE from the held-out genome and reused for all builders.
   coverage: 30
-  read_length: 150
+  read_length: 200
   substitution_error_rate: 0.001
-  seed: 1
+  seed: 2026
 
 mapping:
+  # GraphAligner is used identically on every normalized GFA.
   threads: 8
-  giraffe_args: ""
-
-annotation:
-  # qpg filters weak/secondary mappings; this threshold is configurable.
   min_mapq: 10
+  graphaligner_args: "--min-alignment-score 90 --seeds-minimizer-ignore-frequent 1e-2 -x vg"
 
 copy_number:
-  # qpg_like implements the same basic idea as qpg/tag_gfa_copy_numbers.pl:
-  # infer a one-copy depth and divide each node depth by it.
+  # qpg-like estimator based on SC/node depth.
   mode: "qpg_like"
   min_depth: 0.1
   depth_div: 4.0
   fit_step: 0.1
 
-  # qpg's Perl script historically uses offset=0.4 and min_copy=0.45.
-  # For HUBO experiments, 0.0/0.0 is a cleaner default because absent nodes
-  # should be allowed to have approximately zero desired visits.
-  offset: 0.0
-  min_copy: 0.0
+  # Match the historical qpg tag_gfa_copy_numbers.pl defaults.
+  offset: 0.4
+  min_copy: 0.45
   max_copy: 10.0
 
 subgraph:
-  # "auto": choose a small branch/repeat-rich neighborhood.
-  # "whole": pass the full annotated graph into the HUBO builder.
+  # The original PGSA optimization is a tangle-resolution subproblem.
+  # Use the SAME selector for all builders. Set mode=whole only for graphs
+  # small enough to expand symbolically.
   mode: "auto"
   radius: 2
   min_nodes: 3
@@ -56,21 +75,23 @@ subgraph:
   repeat_copy_threshold: 1.5
 
 hubo:
-  # Lambda_1 in Eq. (9) of the non-variational HUBO paper.
+  # Eq. (9) edge-following penalty.
   lambda_edge: 10.0
 
-  # "auto" => round(sum of biological-node copy numbers), minimum 1.
-  # Or replace with an integer.
-  walk_length: "auto"
+  # Explicit penalty for unused binary state IDs X_t >= 2N.
+  # This makes validity treatment identical across all graph builders.
+  lambda_invalid: 100.0
 
-  # Safety guards. Start small, then scale deliberately.
-  max_variables: 40
+  # Initial T is sum_v w(v), converted to an integer by the policy below.
+  walk_length: "sum_weights"
+  fractional_T_policy: "nearest"  # nearest | floor | ceil | error
+
+  max_variables: 48
   max_terms: 2000000
   coefficient_tolerance: 1.0e-12
 
 validation:
   random_tests: 250
   seed: 7
-  # Exhaustively enumerate only when q <= this many binary variables.
   exhaustive_limit: 18
   tolerance: 1.0e-8
