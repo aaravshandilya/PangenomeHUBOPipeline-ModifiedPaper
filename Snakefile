@@ -149,6 +149,7 @@ rule build_pggb:
         set -euo pipefail
         outdir=results/graphs/pggb/pggb_out
         rm -rf "$outdir" && mkdir -p "$outdir"
+        samtools faidx {input.fasta}
         n=$(wc -l < {input.fofn})
         pggb -i {input.fasta} -o "$outdir" -n "$n" -t {threads} -p {params.p} -s {params.s}
         gfa=$(find "$outdir" -type f -name '*.gfa' | head -1)
