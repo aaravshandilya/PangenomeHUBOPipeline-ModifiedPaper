@@ -47,7 +47,7 @@ rule generate_population:
     input:
         exe=rules.prepare_qpg.output.exe
     output:
-        pop="results/population/population.fa",
+        population_fasta="results/population/population.fa",
         manifest="results/population/population.tsv"
     params:
         genome_opts=config["qpg"]["genome_opts"],
@@ -59,7 +59,7 @@ rule generate_population:
 
 rule fixed_split:
     input:
-        pop=rules.generate_population.output.pop
+        population_fasta=rules.generate_population.output.population_fasta
     output:
         split="results/population/split.tsv",
         train_fofn="results/population/train.fofn",
