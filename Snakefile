@@ -268,14 +268,16 @@ rule build_hubo:
         metadata="results/{builder}/hubo/metadata.json"
     params:
         lambda_edge=config["hubo"]["lambda_edge"],
+        lambda_invalid=config["hubo"]["lambda_invalid"],
         walk_length=config["hubo"]["walk_length"],
+        fractional_T_policy=config["hubo"]["fractional_T_policy"],
         max_variables=config["hubo"]["max_variables"],
         max_terms=config["hubo"]["max_terms"],
         coefficient_tolerance=config["hubo"]["coefficient_tolerance"]
     conda:
         "workflow/envs/python.yaml"
     script:
-        "workflow/scripts/build_hubo.py"
+        "workflow/scripts/build_hubo_professor.py"
 
 rule validate_hubo:
     input:
