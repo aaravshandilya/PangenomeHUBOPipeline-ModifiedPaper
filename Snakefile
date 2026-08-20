@@ -1,117 +1,180 @@
 configfile: "config.yaml"
 
-import csv
 from pathlib import Path
 
-SAMPLES_TSV = config["samples_tsv"]
+BUILDERS = config["builders"]["names"]
+SEED = int(config["qpg"]["population_seed"])
 
-with open(SAMPLES_TSV, newline="") as handle:
-    SAMPLE_ROWS = list(csv.DictReader(handle, delimiter="\t"))
-
-required_cols = {"sample", "fasta", "role"}
-if not SAMPLE_ROWS or not required_cols.issubset(SAMPLE_ROWS[0].keys()):
-    raise ValueError(
-        f"{SAMPLES_TSV} must contain tab-separated columns: sample, fasta, role"
-    )
-
-HOLDOUT = config["holdout_sample"]
-holdout_rows = [r for r in SAMPLE_ROWS if r["sample"] == HOLDOUT]
-if len(holdout_rows) != 1:
-    raise ValueError(f"Expected exactly one row for holdout_sample={HOLDOUT!r}")
-HOLDOUT_FASTA = holdout_rows[0]["fasta"]
-
-TRAINING_ROWS = [r for r in SAMPLE_ROWS if r["role"].lower() == "train"]
-TRAINING_FASTAS = [r["fasta"] for r in TRAINING_ROWS]
-
-REFERENCE = config["pangenome"]["reference"]
-if REFERENCE not in {r["sample"] for r in TRAINING_ROWS}:
-    raise ValueError(
-        "pangenome.reference must name a training sample, not the held-out sample."
-    )
-
-PG_DIR = config["pangenome"]["out_dir"]
-PG_NAME = config["pangenome"]["out_name"]
-PG_GFA_GZ = f"{PG_DIR}/{PG_NAME}.full.gfa.gz"
-PG_GBZ = f"{PG_DIR}/{PG_NAME}.full.gbz"
+RAW_GFA = {
+    "minigraph": "results/graphs/minigraph/raw.gfa",
+    "minigraph_cactus": "results/graphs/minigraph_cactus/raw.gfa",
+    "pggb": "results/graphs/pggb/raw.gfa",
+}
 
 rule all:
     input:
-        "results/hubo/hubo.json",
-        "results/hubo/terms.tsv",
-        "results/hubo/variable_map.tsv",
-        "results/hubo/metadata.json",
-        "results/hubo/validation.json",
-        "results/subgraph/selected.gfa",
-        "results/subgraph/selected_copy_numbers.tsv",
-        "results/copy_number/copy_numbers.tsv",
-        "results/annotation/annotated.gfa"
+        expand("results/{builder}/hubo/hubo.json", builder=BUILDERS),
+        expand("results/{builder}/hubo/hubo_terms.tsv", builder=BUILDERS),
+        expand("results/{builder}/hubo/metadata.json", builder=BUILDERS),
+        expand("results/{builder}/hubo/validation.json", builder=BUILDERS),
+        expand("results/{builder}/graph_stats.json", builder=BUILDERS),
+        "results/population/split.tsv",
+        "results/reads/heldout.fastq"
 
-rule make_cactus_seqfile:
-    input:
-        manifest=SAMPLES_TSV,
-        fastas=TRAINING_FASTAS
+rule prepare_qpg:
     output:
-        "results/input/cactus.seqfile"
+        exe="resources/qpg/genome_create",
+        commit="resources/qpg/COMMIT"
+    params:
+        repo=config["qpg"]["repo_url"],
+        commit=config["qpg"]["commit"]
+    conda:
+        "workflow/envs/build.yaml"
+    shell:
+        r"""
+        set -euo pipefail
+        mkdir -p resources
+        if [ ! -d resources/qpg/.git ]; then
+            git clone {params.repo} resources/qpg
+        fi
+        git -C resources/qpg fetch --all --tags
+        git -C resources/qpg checkout {params.commit}
+        gcc -O2 resources/qpg/genome_create.c -o {output.exe} -lm
+        git -C resources/qpg rev-parse HEAD > {output.commit}
+        """
+
+rule generate_population:
+    input:
+        exe=rules.prepare_qpg.output.exe
+    output:
+        pop="results/population/population.fa",
+        manifest="results/population/population.tsv"
+    params:
+        genome_opts=config["qpg"]["genome_opts"],
+        seed=SEED
     conda:
         "workflow/envs/python.yaml"
     script:
-        "workflow/scripts/make_seqfile.py"
+        "workflow/scripts/generate_population.py"
 
-rule build_pangenome:
+rule fixed_split:
     input:
-        seqfile="results/input/cactus.seqfile"
+        pop=rules.generate_population.output.pop
     output:
-        gfa=PG_GFA_GZ,
-        gbz=PG_GBZ
+        split="results/population/split.tsv",
+        train_fofn="results/population/train.fofn",
+        test_fofn="results/population/test.fofn",
+        heldout="results/population/heldout.fa",
+        train_concat="results/population/training.fa"
     params:
-        outdir=PG_DIR,
-        outname=PG_NAME,
-        reference=REFERENCE,
-        jobstore=config["pangenome"]["jobstore"],
-        extra=config["pangenome"].get(
-            "extra_args",
-            "--noSplit --permissiveContigFilter"
-        )
+        n_training=config["population"]["n_training"],
+        n_test=config["population"]["n_test"],
+        split_seed=config["population"]["split_seed"],
+        heldout_index=config["population"]["heldout_index"]
+    conda:
+        "workflow/envs/python.yaml"
+    script:
+        "workflow/scripts/fixed_split.py"
+
+rule cactus_seqfile:
+    input:
+        split=rules.fixed_split.output.split
+    output:
+        "results/graphs/minigraph_cactus/seqfile.txt"
+    conda:
+        "workflow/envs/python.yaml"
+    script:
+        "workflow/scripts/make_cactus_seqfile_from_split.py"
+
+rule build_minigraph:
+    input:
+        fofn=rules.fixed_split.output.train_fofn
+    output:
+        RAW_GFA["minigraph"]
     threads:
-        config["pangenome"].get("threads", 16)
+        config["builders"]["minigraph"]["threads"]
+    params:
+        args=config["builders"]["minigraph"]["args"]
+    conda:
+        "workflow/envs/minigraph.yaml"
+    shell:
+        r"""
+        set -euo pipefail
+        mkdir -p $(dirname {output})
+        minigraph {params.args} $(cat {input.fofn}) > {output}
+        """
+
+rule build_minigraph_cactus:
+    input:
+        seqfile=rules.cactus_seqfile.output
+    output:
+        RAW_GFA["minigraph_cactus"]
+    threads:
+        config["builders"]["minigraph_cactus"]["threads"]
+    params:
+        args=config["builders"]["minigraph_cactus"]["args"]
     conda:
         "workflow/envs/cactus.yaml"
-    log:
-        "logs/minigraph_cactus.log"
     shell:
         r"""
-        mkdir -p {params.outdir} "$(dirname {params.jobstore})"
-        cactus-pangenome \
-            {params.jobstore} \
-            {input.seqfile} \
-            --outDir {params.outdir} \
-            --outName {params.outname} \
-            --reference {params.reference} \
-            --gfa full \
-            --gbz full \
-            --giraffe full \
-            --mgCores {threads} \
-            {params.extra} \
-            > {log} 2>&1
+        set -euo pipefail
+        outdir=results/graphs/minigraph_cactus/cactus_out
+        jobstore=results/graphs/minigraph_cactus/jobstore
+        rm -rf "$jobstore" "$outdir"
+        mkdir -p "$outdir"
+        ref=$(head -1 {input.seqfile} | cut -f1)
+        cactus-pangenome "$jobstore" {input.seqfile} \
+            --outDir "$outdir" --outName graph --reference "$ref" \
+            --gfa full --mgCores {threads} {params.args}
+        gfa=$(find "$outdir" -type f \( -name '*.full.gfa' -o -name '*.full.gfa.gz' \) | head -1)
+        test -n "$gfa"
+        if [[ "$gfa" == *.gz ]]; then gzip -dc "$gfa" > {output}; else cp "$gfa" {output}; fi
         """
 
-rule decompress_gfa:
+rule build_pggb:
     input:
-        PG_GFA_GZ
+        fasta=rules.fixed_split.output.train_concat,
+        fofn=rules.fixed_split.output.train_fofn
     output:
-        "results/pangenome/pangenome.full.gfa"
+        RAW_GFA["pggb"]
+    threads:
+        config["builders"]["pggb"]["threads"]
+    params:
+        p=config["builders"]["pggb"]["map_pct_id"],
+        s=config["builders"]["pggb"]["segment_length"]
+    conda:
+        "workflow/envs/pggb.yaml"
     shell:
         r"""
-        mkdir -p "$(dirname {output})"
-        gzip -dc {input} > {output}
+        set -euo pipefail
+        outdir=results/graphs/pggb/pggb_out
+        rm -rf "$outdir" && mkdir -p "$outdir"
+        n=$(wc -l < {input.fofn})
+        pggb -i {input.fasta} -o "$outdir" -n "$n" -t {threads} -p {params.p} -s {params.s}
+        gfa=$(find "$outdir" -type f -name '*.gfa' | head -1)
+        test -n "$gfa"
+        cp "$gfa" {output}
         """
 
-rule simulate_reads:
+rule normalize_graph:
     input:
-        HOLDOUT_FASTA
+        lambda wc: RAW_GFA[wc.builder]
     output:
-        fastq=f"results/reads/{HOLDOUT}.fastq",
-        truth=f"results/reads/{HOLDOUT}.truth.tsv"
+        gfa="results/{builder}/normalized/graph.gfa",
+        nodes="results/{builder}/normalized/nodes.tsv",
+        edges="results/{builder}/normalized/edges.tsv",
+        seqs="results/{builder}/normalized/node_sequences.fa"
+    conda:
+        "workflow/envs/python.yaml"
+    script:
+        "workflow/scripts/normalize_graph.py"
+
+rule simulate_reads_once:
+    input:
+        rules.fixed_split.output.heldout
+    output:
+        fastq="results/reads/heldout.fastq",
+        truth="results/reads/heldout.truth.tsv"
     params:
         coverage=config["reads"]["coverage"],
         read_length=config["reads"]["read_length"],
@@ -124,39 +187,32 @@ rule simulate_reads:
 
 rule map_reads:
     input:
-        gbz=PG_GBZ,
-        reads=f"results/reads/{HOLDOUT}.fastq"
+        gfa="results/{builder}/normalized/graph.gfa",
+        reads=rules.simulate_reads_once.output.fastq
     output:
-        f"results/mapping/{HOLDOUT}.gaf"
-    params:
-        extra=config["mapping"].get("giraffe_args", "")
+        "results/{builder}/mapping/reads.gaf"
     threads:
-        config["mapping"].get("threads", 8)
+        config["mapping"]["threads"]
+    params:
+        args=config["mapping"]["graphaligner_args"]
     conda:
-        "workflow/envs/vg.yaml"
-    log:
-        "logs/giraffe.log"
+        "workflow/envs/graphaligner.yaml"
     shell:
         r"""
-        mkdir -p "$(dirname {output})"
-        vg giraffe \
-            -t {threads} \
-            -Z {input.gbz} \
-            -f {input.reads} \
-            -o gaf \
-            {params.extra} \
-            > {output} 2> {log}
+        set -euo pipefail
+        mkdir -p $(dirname {output})
+        GraphAligner -g {input.gfa} -f {input.reads} -a {output} -t {threads} {params.args}
         """
 
 rule annotate_graph:
     input:
-        gfa="results/pangenome/pangenome.full.gfa",
-        gaf=f"results/mapping/{HOLDOUT}.gaf"
+        gfa="results/{builder}/normalized/graph.gfa",
+        gaf="results/{builder}/mapping/reads.gaf"
     output:
-        gfa="results/annotation/annotated.gfa",
-        depths="results/annotation/node_depths.tsv"
+        gfa="results/{builder}/weighted/annotated.gfa",
+        depths="results/{builder}/weighted/node_depths.tsv"
     params:
-        min_mapq=config["annotation"]["min_mapq"]
+        min_mapq=config["mapping"]["min_mapq"]
     conda:
         "workflow/envs/python.yaml"
     script:
@@ -164,11 +220,11 @@ rule annotate_graph:
 
 rule estimate_copy_numbers:
     input:
-        gfa="results/annotation/annotated.gfa",
-        depths="results/annotation/node_depths.tsv"
+        gfa="results/{builder}/weighted/annotated.gfa",
+        depths="results/{builder}/weighted/node_depths.tsv"
     output:
-        copies="results/copy_number/copy_numbers.tsv",
-        baseline="results/copy_number/baseline.json"
+        copies="results/{builder}/weighted/weights.tsv",
+        baseline="results/{builder}/weighted/baseline.json"
     params:
         mode=config["copy_number"]["mode"],
         min_depth=config["copy_number"]["min_depth"],
@@ -184,12 +240,12 @@ rule estimate_copy_numbers:
 
 rule select_tangle:
     input:
-        gfa="results/annotation/annotated.gfa",
-        copies="results/copy_number/copy_numbers.tsv"
+        gfa="results/{builder}/weighted/annotated.gfa",
+        copies="results/{builder}/weighted/weights.tsv"
     output:
-        gfa="results/subgraph/selected.gfa",
-        copies="results/subgraph/selected_copy_numbers.tsv",
-        summary="results/subgraph/summary.json"
+        gfa="results/{builder}/tangle/selected.gfa",
+        copies="results/{builder}/tangle/weights.tsv",
+        summary="results/{builder}/tangle/summary.json"
     params:
         mode=config["subgraph"]["mode"],
         radius=config["subgraph"]["radius"],
@@ -203,13 +259,13 @@ rule select_tangle:
 
 rule build_hubo:
     input:
-        gfa="results/subgraph/selected.gfa",
-        copies="results/subgraph/selected_copy_numbers.tsv"
+        gfa="results/{builder}/tangle/selected.gfa",
+        copies="results/{builder}/tangle/weights.tsv"
     output:
-        hubo="results/hubo/hubo.json",
-        terms="results/hubo/terms.tsv",
-        variable_map="results/hubo/variable_map.tsv",
-        metadata="results/hubo/metadata.json"
+        hubo="results/{builder}/hubo/hubo.json",
+        terms="results/{builder}/hubo/hubo_terms.tsv",
+        variable_map="results/{builder}/hubo/variable_map.tsv",
+        metadata="results/{builder}/hubo/metadata.json"
     params:
         lambda_edge=config["hubo"]["lambda_edge"],
         walk_length=config["hubo"]["walk_length"],
@@ -223,9 +279,9 @@ rule build_hubo:
 
 rule validate_hubo:
     input:
-        hubo="results/hubo/hubo.json"
+        hubo="results/{builder}/hubo/hubo.json"
     output:
-        "results/hubo/validation.json"
+        "results/{builder}/hubo/validation.json"
     params:
         random_tests=config["validation"]["random_tests"],
         seed=config["validation"]["seed"],
@@ -235,3 +291,14 @@ rule validate_hubo:
         "workflow/envs/python.yaml"
     script:
         "workflow/scripts/validate_hubo.py"
+
+rule graph_stats:
+    input:
+        gfa="results/{builder}/normalized/graph.gfa",
+        hubo="results/{builder}/hubo/hubo.json"
+    output:
+        "results/{builder}/graph_stats.json"
+    conda:
+        "workflow/envs/python.yaml"
+    script:
+        "workflow/scripts/graph_stats.py"
