@@ -3,7 +3,12 @@ import importlib.util
 import csv, json, math
 
 # Reuse the already validated Eq. (8)-(10) polynomial implementation.
-spec = importlib.util.spec_from_file_location('base_hubo', Path(__file__).with_name('build_hubo.py'))
+# Snakemake executes script: files from a temporary location, so resolve the
+# shared core from the workflow working directory instead of __file__.
+base_path = Path.cwd() / "workflow" / "scripts" / "build_hubo.py"
+if not base_path.exists():
+    raise FileNotFoundError(f"Could not find HUBO core at {base_path}")
+spec = importlib.util.spec_from_file_location('base_hubo', base_path)
 base = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(base)
 
