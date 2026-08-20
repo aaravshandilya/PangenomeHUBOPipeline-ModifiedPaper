@@ -86,7 +86,9 @@ hubo:
   walk_length: "sum_weights"
   fractional_T_policy: "nearest"  # nearest | floor | ceil | error
 
-  max_variables: 48
+  # The current Minigraph tangle requires q=75 variables (T=15, 5 bits/time).
+  # Keep a deliberate guard above that size while still catching accidental blow-ups.
+  max_variables: 96
   max_terms: 2000000
   coefficient_tolerance: 1.0e-12
 
