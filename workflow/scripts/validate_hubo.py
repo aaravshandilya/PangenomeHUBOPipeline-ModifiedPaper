@@ -24,6 +24,7 @@ T = int(meta["walk_length_T"])
 n_bits = int(meta["bits_per_time"])
 N = int(meta["N_biological_nodes"])
 lambda_edge = float(meta["lambda_edge"])
+lambda_invalid = float(meta.get("lambda_invalid", 0.0))
 weights = [float(x) for x in meta["node_weights"]]
 edge_set = {tuple(e) for e in meta["oriented_edges"]}
 state_labels = meta["state_labels"]
@@ -55,12 +56,14 @@ def direct_energy(bits):
         if (states[t], states[t+1]) not in edge_set:
             h1 += lambda_edge
 
+    hinvalid = sum(lambda_invalid for s in states if s >= 2*N)
+
     counts = [0] * N
     for state in states:
         if 0 <= state < 2*N:
             counts[state // 2] += 1
     h2 = sum((counts[i] - weights[i])**2 for i in range(N))
-    return h1 + h2
+    return h1 + h2 + hinvalid
 
 rng = random.Random(seed)
 errors = []
@@ -86,7 +89,6 @@ if max_error > tol:
         f"{max_error} > tolerance {tol}"
     )
 
-exhaustive = None
 if q <= exhaustive_limit:
     best_energy = float("inf")
     best_bits = None
@@ -96,7 +98,6 @@ if q <= exhaustive_limit:
         if e < best_energy:
             best_energy = e
             best_bits = bits
-
     states = decode_states(best_bits)
     labels = [
         state_labels[s] if 0 <= s < len(state_labels) else f"INVALID_{s}"
