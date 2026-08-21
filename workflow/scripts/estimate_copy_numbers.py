@@ -57,73 +57,99 @@ def weighted_mean(items):
         return 0.0
     return sum(r["depth"] * r["length"] for r in items) / den
 
-# qpg's estimator deliberately avoids loops/self-loops when estimating
-# single-copy depth, because repeats can inflate their coverage.
-eligible = [
-    r for r in rows
-    if r["node"] not in cycle_nodes
-    and r["node"] not in self_loop_nodes
-    and r["depth"] > min_depth_initial
-]
-if not eligible:
-    eligible = [r for r in rows if r["depth"] > min_depth_initial]
-if not eligible:
-    raise ValueError(
-        "All nodes have near-zero depth; mapping/copy-number estimation cannot continue."
-    )
-
-if mode == "median":
-    vals = sorted(r["depth"] for r in eligible)
+def median(values):
+    vals = sorted(values)
+    if not vals:
+        raise ValueError("Cannot compute a median from an empty set of depths.")
     mid = len(vals) // 2
-    baseline = (
-        vals[mid] if len(vals) % 2
-        else (vals[mid-1] + vals[mid]) / 2.0
-    )
+    if len(vals) % 2:
+        return vals[mid]
+    return (vals[mid - 1] + vals[mid]) / 2.0
+
+# Builder-independent mode used for the comparative experiment. It deliberately
+# does NOT remove cycle nodes, because PGGB can place nearly every node in a
+# cycle. Using all mapped nodes above the same minimum-depth threshold makes the
+# baseline definition identical across Minigraph, Minigraph-Cactus, and PGGB.
+if mode == "robust_median":
+    baseline_rows = [r for r in rows if r["depth"] > min_depth_initial]
+    if not baseline_rows:
+        raise ValueError(
+            "All nodes have near-zero depth; mapping/copy-number estimation cannot continue."
+        )
+    baseline = median([r["depth"] for r in baseline_rows])
     fit_delta = None
+    baseline_selection = "all_nodes_above_min_depth"
+
 else:
-    # Iterative weighted depth estimate, following the logic in
-    # qpg/tag_gfa_copy_numbers.pl.
-    threshold = min_depth_initial
-    baseline = weighted_mean([r for r in eligible if r["depth"] > threshold])
-    for _ in range(10):
-        if baseline <= 0:
-            break
-        threshold = baseline / depth_div
-        used = [r for r in eligible if r["depth"] > threshold]
-        if not used:
-            break
-        new_baseline = weighted_mean(used)
-        if abs(new_baseline - baseline) < 1e-12:
+    # Historical qpg-like path retained for reproducibility/reference.
+    eligible = [
+        r for r in rows
+        if r["node"] not in cycle_nodes
+        and r["node"] not in self_loop_nodes
+        and r["depth"] > min_depth_initial
+    ]
+    if not eligible:
+        eligible = [r for r in rows if r["depth"] > min_depth_initial]
+    if not eligible:
+        raise ValueError(
+            "All nodes have near-zero depth; mapping/copy-number estimation cannot continue."
+        )
+
+    if mode == "median":
+        baseline_rows = eligible
+        baseline = median([r["depth"] for r in eligible])
+        fit_delta = None
+        baseline_selection = "noncycle_nodes_above_min_depth"
+    elif mode == "qpg_like":
+        baseline_rows = eligible
+        # Iterative weighted depth estimate, following the logic in
+        # qpg/tag_gfa_copy_numbers.pl.
+        threshold = min_depth_initial
+        baseline = weighted_mean([r for r in eligible if r["depth"] > threshold])
+        for _ in range(10):
+            if baseline <= 0:
+                break
+            threshold = baseline / depth_div
+            used = [r for r in eligible if r["depth"] > threshold]
+            if not used:
+                break
+            new_baseline = weighted_mean(used)
+            if abs(new_baseline - baseline) < 1e-12:
+                baseline = new_baseline
+                break
             baseline = new_baseline
-            break
-        baseline = new_baseline
 
-    # Fit the fundamental one-copy depth by looking for a depth D for which
-    # observed depths are near integer multiples of D. This mirrors the
-    # search in qpg/tag_gfa_copy_numbers.pl.
-    lo = baseline / 1.3
-    hi = baseline * 1.5
-    if fit_step <= 0:
-        fit_step = max(baseline / 100.0, 1e-6)
+        # Fit the fundamental one-copy depth by looking for a depth D for which
+        # observed depths are near integer multiples of D. This mirrors the
+        # search in qpg/tag_gfa_copy_numbers.pl.
+        lo = baseline / 1.3
+        hi = baseline * 1.5
+        if fit_step <= 0:
+            fit_step = max(baseline / 100.0, 1e-6)
 
-    best = baseline
-    best_delta = math.inf
-    candidate = lo
-    while candidate <= hi + fit_step * 0.5:
-        if candidate > 0:
-            delta = 0.0
-            for r in rows:
-                d = r["depth"]
-                if d > baseline / 4.0:
-                    multiple = max(1, int(d / candidate + 0.5))
-                    diff = abs(d - multiple * candidate) / candidate
-                    delta += diff * r["length"]
-            if delta < best_delta:
-                best_delta = delta
-                best = candidate
-        candidate += fit_step
-    baseline = best
-    fit_delta = best_delta
+        best = baseline
+        best_delta = math.inf
+        candidate = lo
+        while candidate <= hi + fit_step * 0.5:
+            if candidate > 0:
+                delta = 0.0
+                for r in rows:
+                    d = r["depth"]
+                    if d > baseline / 4.0:
+                        multiple = max(1, int(d / candidate + 0.5))
+                        diff = abs(d - multiple * candidate) / candidate
+                        delta += diff * r["length"]
+                if delta < best_delta:
+                    best_delta = delta
+                    best = candidate
+            candidate += fit_step
+        baseline = best
+        fit_delta = best_delta
+        baseline_selection = "qpg_noncycle_fit"
+    else:
+        raise ValueError(
+            f"Unknown copy-number mode '{mode}'. Expected robust_median, median, or qpg_like."
+        )
 
 if baseline <= 0:
     raise ValueError(f"Invalid inferred one-copy depth: {baseline}")
@@ -145,11 +171,19 @@ payload = {
     "mode": mode,
     "one_copy_depth": baseline,
     "fit_delta": fit_delta,
+    "baseline_selection": baseline_selection,
+    "baseline_node_count": len(baseline_rows),
     "offset": offset,
     "min_copy": min_copy,
     "max_copy": max_copy,
-    "cycle_nodes_excluded_from_initial_depth": sorted(cycle_nodes),
-    "self_loop_nodes_excluded_from_initial_depth": sorted(self_loop_nodes),
+    "cycle_node_count": len(cycle_nodes),
+    "self_loop_node_count": len(self_loop_nodes),
+    "cycle_nodes_excluded_from_initial_depth": (
+        [] if mode == "robust_median" else sorted(cycle_nodes)
+    ),
+    "self_loop_nodes_excluded_from_initial_depth": (
+        [] if mode == "robust_median" else sorted(self_loop_nodes)
+    ),
 }
 with out_json.open("w") as out:
     json.dump(payload, out, indent=2)
