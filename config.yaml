@@ -53,13 +53,15 @@ mapping:
   graphaligner_args: "--min-alignment-score 90 --seeds-minimizer-ignore-frequent 1e-2 -x vg"
 
 copy_number:
-  # qpg-like estimator based on SC/node depth.
-  mode: "qpg_like"
+  # Builder-independent baseline for the three-way graph comparison.
+  # Use the median depth across all mapped nodes above min_depth. This avoids
+  # PGGB's near-all-cycle topology collapsing the historical qpg baseline.
+  mode: "robust_median"
   min_depth: 0.1
   depth_div: 4.0
   fit_step: 0.1
 
-  # Match the historical qpg tag_gfa_copy_numbers.pl defaults.
+  # Preserve the historical qpg copy-number offset/clamps after baseline fitting.
   offset: 0.4
   min_copy: 0.45
   max_copy: 10.0
@@ -86,8 +88,7 @@ hubo:
   walk_length: "sum_weights"
   fractional_T_policy: "nearest"  # nearest | floor | ceil | error
 
-  # The current Minigraph tangle requires q=75 variables (T=15, 5 bits/time).
-  # Keep a deliberate guard above that size while still catching accidental blow-ups.
+  # Deliberate safety guard; increase only after inspecting N, T, and q.
   max_variables: 96
   max_terms: 2000000
   coefficient_tolerance: 1.0e-12
