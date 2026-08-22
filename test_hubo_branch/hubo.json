@@ -1,0 +1,1086 @@
+{
+  "format": "binary_polynomial_v1",
+  "variables": [
+    {
+      "id": 0,
+      "name": "x_0_0",
+      "time": 0,
+      "bit": 0
+    },
+    {
+      "id": 1,
+      "name": "x_0_1",
+      "time": 0,
+      "bit": 1
+    },
+    {
+      "id": 2,
+      "name": "x_0_2",
+      "time": 0,
+      "bit": 2
+    },
+    {
+      "id": 3,
+      "name": "x_1_0",
+      "time": 1,
+      "bit": 0
+    },
+    {
+      "id": 4,
+      "name": "x_1_1",
+      "time": 1,
+      "bit": 1
+    },
+    {
+      "id": 5,
+      "name": "x_1_2",
+      "time": 1,
+      "bit": 2
+    },
+    {
+      "id": 6,
+      "name": "x_2_0",
+      "time": 2,
+      "bit": 0
+    },
+    {
+      "id": 7,
+      "name": "x_2_1",
+      "time": 2,
+      "bit": 1
+    },
+    {
+      "id": 8,
+      "name": "x_2_2",
+      "time": 2,
+      "bit": 2
+    }
+  ],
+  "terms": [
+    {
+      "variables": [],
+      "coefficient": 26.0
+    },
+    {
+      "variables": [
+        1
+      ],
+      "coefficient": -2.0
+    },
+    {
+      "variables": [
+        2
+      ],
+      "coefficient": -4.0
+    },
+    {
+      "variables": [
+        4
+      ],
+      "coefficient": -12.0
+    },
+    {
+      "variables": [
+        5
+      ],
+      "coefficient": -14.0
+    },
+    {
+      "variables": [
+        7
+      ],
+      "coefficient": -12.0
+    },
+    {
+      "variables": [
+        8
+      ],
+      "coefficient": -14.0
+    },
+    {
+      "variables": [
+        0,
+        4
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        0,
+        5
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        1,
+        2
+      ],
+      "coefficient": 2.0
+    },
+    {
+      "variables": [
+        1,
+        4
+      ],
+      "coefficient": 14.0
+    },
+    {
+      "variables": [
+        1,
+        5
+      ],
+      "coefficient": 12.0
+    },
+    {
+      "variables": [
+        1,
+        7
+      ],
+      "coefficient": 4.0
+    },
+    {
+      "variables": [
+        1,
+        8
+      ],
+      "coefficient": 2.0
+    },
+    {
+      "variables": [
+        2,
+        4
+      ],
+      "coefficient": 12.0
+    },
+    {
+      "variables": [
+        2,
+        5
+      ],
+      "coefficient": 14.0
+    },
+    {
+      "variables": [
+        2,
+        7
+      ],
+      "coefficient": 2.0
+    },
+    {
+      "variables": [
+        2,
+        8
+      ],
+      "coefficient": 4.0
+    },
+    {
+      "variables": [
+        3,
+        4
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        3,
+        5
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        3,
+        7
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        3,
+        8
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        4,
+        5
+      ],
+      "coefficient": 22.0
+    },
+    {
+      "variables": [
+        4,
+        7
+      ],
+      "coefficient": 14.0
+    },
+    {
+      "variables": [
+        4,
+        8
+      ],
+      "coefficient": 12.0
+    },
+    {
+      "variables": [
+        5,
+        7
+      ],
+      "coefficient": 12.0
+    },
+    {
+      "variables": [
+        5,
+        8
+      ],
+      "coefficient": 14.0
+    },
+    {
+      "variables": [
+        6,
+        7
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        6,
+        8
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        7,
+        8
+      ],
+      "coefficient": 22.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        3
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        4
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        5
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        0,
+        2,
+        3
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        0,
+        2,
+        4
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        0,
+        2,
+        5
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        0,
+        3,
+        4
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        0,
+        3,
+        5
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        0,
+        4,
+        5
+      ],
+      "coefficient": -20.0
+    },
+    {
+      "variables": [
+        1,
+        2,
+        4
+      ],
+      "coefficient": -14.0
+    },
+    {
+      "variables": [
+        1,
+        2,
+        5
+      ],
+      "coefficient": -14.0
+    },
+    {
+      "variables": [
+        1,
+        2,
+        7
+      ],
+      "coefficient": -4.0
+    },
+    {
+      "variables": [
+        1,
+        2,
+        8
+      ],
+      "coefficient": -4.0
+    },
+    {
+      "variables": [
+        1,
+        3,
+        4
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        1,
+        3,
+        5
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        1,
+        4,
+        5
+      ],
+      "coefficient": -34.0
+    },
+    {
+      "variables": [
+        1,
+        7,
+        8
+      ],
+      "coefficient": -4.0
+    },
+    {
+      "variables": [
+        2,
+        3,
+        4
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        2,
+        3,
+        5
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        2,
+        4,
+        5
+      ],
+      "coefficient": -34.0
+    },
+    {
+      "variables": [
+        2,
+        7,
+        8
+      ],
+      "coefficient": -4.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        5
+      ],
+      "coefficient": -20.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        6
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        7
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        8
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        3,
+        5,
+        6
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        3,
+        5,
+        7
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        3,
+        5,
+        8
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        3,
+        6,
+        7
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        3,
+        6,
+        8
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        3,
+        7,
+        8
+      ],
+      "coefficient": -20.0
+    },
+    {
+      "variables": [
+        4,
+        5,
+        7
+      ],
+      "coefficient": -14.0
+    },
+    {
+      "variables": [
+        4,
+        5,
+        8
+      ],
+      "coefficient": -14.0
+    },
+    {
+      "variables": [
+        4,
+        6,
+        7
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        4,
+        6,
+        8
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        4,
+        7,
+        8
+      ],
+      "coefficient": -34.0
+    },
+    {
+      "variables": [
+        5,
+        6,
+        7
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        5,
+        6,
+        8
+      ],
+      "coefficient": -10.0
+    },
+    {
+      "variables": [
+        5,
+        7,
+        8
+      ],
+      "coefficient": -34.0
+    },
+    {
+      "variables": [
+        6,
+        7,
+        8
+      ],
+      "coefficient": -20.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "coefficient": 20.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        2,
+        5
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        3,
+        4
+      ],
+      "coefficient": 20.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        3,
+        5
+      ],
+      "coefficient": 20.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        4,
+        5
+      ],
+      "coefficient": 30.0
+    },
+    {
+      "variables": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "coefficient": 20.0
+    },
+    {
+      "variables": [
+        0,
+        2,
+        3,
+        5
+      ],
+      "coefficient": 20.0
+    },
+    {
+      "variables": [
+        0,
+        2,
+        4,
+        5
+      ],
+      "coefficient": 30.0
+    },
+    {
+      "variables": [
+        0,
+        3,
+        4,
+        5
+      ],
+      "coefficient": 20.0
+    },
+    {
+      "variables": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "coefficient": 48.0
+    },
+    {
+      "variables": [
+        1,
+        2,
+        7,
+        8
+      ],
+      "coefficient": 8.0
+    },
+    {
+      "variables": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "coefficient": 30.0
+    },
+    {
+      "variables": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "coefficient": 30.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "coefficient": 20.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        5,
+        7
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        5,
+        8
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "coefficient": 20.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        6,
+        8
+      ],
+      "coefficient": 20.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        7,
+        8
+      ],
+      "coefficient": 30.0
+    },
+    {
+      "variables": [
+        3,
+        5,
+        6,
+        7
+      ],
+      "coefficient": 20.0
+    },
+    {
+      "variables": [
+        3,
+        5,
+        6,
+        8
+      ],
+      "coefficient": 20.0
+    },
+    {
+      "variables": [
+        3,
+        5,
+        7,
+        8
+      ],
+      "coefficient": 30.0
+    },
+    {
+      "variables": [
+        3,
+        6,
+        7,
+        8
+      ],
+      "coefficient": 20.0
+    },
+    {
+      "variables": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        4,
+        5,
+        6,
+        8
+      ],
+      "coefficient": 10.0
+    },
+    {
+      "variables": [
+        4,
+        5,
+        7,
+        8
+      ],
+      "coefficient": 48.0
+    },
+    {
+      "variables": [
+        4,
+        6,
+        7,
+        8
+      ],
+      "coefficient": 30.0
+    },
+    {
+      "variables": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "coefficient": 30.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "coefficient": -40.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        2,
+        3,
+        5
+      ],
+      "coefficient": -40.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        2,
+        4,
+        5
+      ],
+      "coefficient": -40.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        3,
+        4,
+        5
+      ],
+      "coefficient": -40.0
+    },
+    {
+      "variables": [
+        0,
+        2,
+        3,
+        4,
+        5
+      ],
+      "coefficient": -40.0
+    },
+    {
+      "variables": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "coefficient": -40.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "coefficient": -40.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        5,
+        6,
+        8
+      ],
+      "coefficient": -40.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        5,
+        7,
+        8
+      ],
+      "coefficient": -40.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        6,
+        7,
+        8
+      ],
+      "coefficient": -40.0
+    },
+    {
+      "variables": [
+        3,
+        5,
+        6,
+        7,
+        8
+      ],
+      "coefficient": -40.0
+    },
+    {
+      "variables": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "coefficient": -40.0
+    },
+    {
+      "variables": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "coefficient": 80.0
+    },
+    {
+      "variables": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "coefficient": 80.0
+    }
+  ],
+  "metadata": {
+    "formulation": "oriented_tangle_hubo_cudby_strelchuk_2026",
+    "N_biological_nodes": 4,
+    "oriented_state_count": 8,
+    "bits_per_time": 3,
+    "walk_length_T": 3,
+    "binary_variable_count": 9,
+    "lambda_edge": 10.0,
+    "node_order": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "node_lengths": {
+      "A": 4,
+      "B": 4,
+      "C": 4,
+      "D": 4
+    },
+    "node_weights": [
+      1.0,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "state_labels": [
+      "A+",
+      "A-",
+      "B+",
+      "B-",
+      "C+",
+      "C-",
+      "D+",
+      "D-"
+    ],
+    "oriented_edges": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        7,
+        3
+      ],
+      [
+        7,
+        5
+      ]
+    ],
+    "term_count": 115,
+    "maximum_degree": 6,
+    "degree_histogram": {
+      "0": 1,
+      "1": 6,
+      "2": 23,
+      "3": 40,
+      "4": 31,
+      "5": 12,
+      "6": 2
+    },
+    "coefficient_tolerance": 1e-12
+  }
+}

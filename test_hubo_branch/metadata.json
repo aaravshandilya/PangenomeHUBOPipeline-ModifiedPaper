@@ -1,0 +1,83 @@
+{
+  "formulation": "oriented_tangle_hubo_cudby_strelchuk_2026",
+  "N_biological_nodes": 4,
+  "oriented_state_count": 8,
+  "bits_per_time": 3,
+  "walk_length_T": 3,
+  "binary_variable_count": 9,
+  "lambda_edge": 10.0,
+  "node_order": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "node_lengths": {
+    "A": 4,
+    "B": 4,
+    "C": 4,
+    "D": 4
+  },
+  "node_weights": [
+    1.0,
+    0.0,
+    1.0,
+    1.0
+  ],
+  "state_labels": [
+    "A+",
+    "A-",
+    "B+",
+    "B-",
+    "C+",
+    "C-",
+    "D+",
+    "D-"
+  ],
+  "oriented_edges": [
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      3,
+      1
+    ],
+    [
+      4,
+      6
+    ],
+    [
+      5,
+      1
+    ],
+    [
+      7,
+      3
+    ],
+    [
+      7,
+      5
+    ]
+  ],
+  "term_count": 115,
+  "maximum_degree": 6,
+  "degree_histogram": {
+    "0": 1,
+    "1": 6,
+    "2": 23,
+    "3": 40,
+    "4": 31,
+    "5": 12,
+    "6": 2
+  },
+  "coefficient_tolerance": 1e-12
+}
