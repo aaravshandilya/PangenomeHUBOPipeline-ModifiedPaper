@@ -1,0 +1,68 @@
+{
+  "valid": true,
+  "random_tests": 250,
+  "maximum_absolute_error": 1.1368683772161603e-13,
+  "tolerance": 1e-08,
+  "binary_variable_count": 20,
+  "examples": [
+    {
+      "polynomial_energy": 24.42500000000001,
+      "direct_energy": 24.425,
+      "absolute_error": 1.0658141036401503e-14,
+      "states": [
+        5,
+        2,
+        6,
+        2
+      ]
+    },
+    {
+      "polynomial_energy": 24.425000000000004,
+      "direct_energy": 24.425,
+      "absolute_error": 3.552713678800501e-15,
+      "states": [
+        2,
+        6,
+        17,
+        16
+      ]
+    },
+    {
+      "polynomial_energy": 332.125,
+      "direct_energy": 332.125,
+      "absolute_error": 0.0,
+      "states": [
+        31,
+        1,
+        31,
+        20
+      ]
+    },
+    {
+      "polynomial_energy": 232.22500000000002,
+      "direct_energy": 232.225,
+      "absolute_error": 2.842170943040401e-14,
+      "states": [
+        6,
+        31,
+        12,
+        30
+      ]
+    },
+    {
+      "polynomial_energy": 232.22500000000002,
+      "direct_energy": 232.225,
+      "absolute_error": 2.842170943040401e-14,
+      "states": [
+        13,
+        18,
+        28,
+        28
+      ]
+    }
+  ],
+  "exhaustive": {
+    "performed": false,
+    "reason": "q=20 exceeds exhaustive_limit=18"
+  }
+}
