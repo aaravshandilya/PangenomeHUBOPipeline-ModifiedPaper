@@ -1,0 +1,14 @@
+{
+  "mode": "robust_median",
+  "one_copy_depth": 10.80582524,
+  "fit_delta": null,
+  "baseline_selection": "all_nodes_above_min_depth",
+  "baseline_node_count": 49,
+  "offset": 0.4,
+  "min_copy": 0.45,
+  "max_copy": 10.0,
+  "cycle_node_count": 100,
+  "self_loop_node_count": 0,
+  "cycle_nodes_excluded_from_initial_depth": [],
+  "self_loop_nodes_excluded_from_initial_depth": []
+}

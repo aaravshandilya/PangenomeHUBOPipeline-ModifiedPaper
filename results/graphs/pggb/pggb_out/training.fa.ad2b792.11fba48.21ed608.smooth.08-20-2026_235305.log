@@ -1,0 +1,274 @@
+Starting pggb on 08-20-2026_235305
+
+Command: /home/aarav/projects/PangenomeHUBOPipeline-ModifiedPaper/.snakemake/conda/1a28035acdd0cee4dac328a327b172e4_/bin/pggb -i results/population/training.fa -o results/graphs/pggb/pggb_out -n 40 -t 8 -p 90 -s 1000
+
+PARAMETERS
+
+general:
+  input-fasta:        results/population/training.fa
+  output-dir:         results/graphs/pggb/pggb_out
+  temp-dir:           results/graphs/pggb/pggb_out
+  resume:             false
+  compress:           false
+  threads:            8
+  poa_threads:        8
+pggb:
+  version:            aaaea8b
+wfmash:
+  version:            v0.14.0-0-g517e1bc
+  segment-length:     1000
+  block-length:       5000
+  map-pct-id:         90
+  n-mappings:         1
+  no-splits:          false
+  sparse-map:         false
+  mash-kmer:          19
+  mash-kmer-thres:    0.001
+  hg-filter-ani-diff: 30
+  exclude-delim:      #
+  no-merge-segments:  false
+seqwish:
+  version:            v0.7.11-0-g0eb6468
+  min-match-len:      23
+  sparse-factor:      0
+  transclose-batch:   10M
+smoothxg:
+  version:            v0.8.2-0-g6a2193d
+  skip-normalization: false
+  n-haplotypes:       40
+  path-jump-max:      0
+  edge-jump-max:      0
+  poa-length-target:  700,1100
+  poa-params:         1,4,6,2,26,1
+  poa_padding:        0.001
+  run_abpoa:          false
+  run_global_poa:     false
+  pad-max-depth:      100
+  write-maf:          false
+  consensus-spec:     false
+  consensus-prefix:   Consensus_
+  block-id-min:       .9000
+  block-ratio-min:    0
+odgi:
+  version:            v0.9.2-0-gbe6a0202
+  viz:                true
+  layout:             true
+  stats:              false
+gfaffix:
+  version:            v0.2.1
+  reduce-redundancy:  true
+vg:
+  version:            v1.63.1
+  deconstruct:        false
+reporting:
+  version:            v1.22
+  multiqc:            false
+
+Running pggb
+
+[mashmap] Skipping self mappings for single file all-vs-all mapping.
+[mashmap] MashMap v3.1.1
+[mashmap] Reference = [results/population/training.fa]
+[mashmap] Query = [results/population/training.fa]
+[mashmap] Kmer size = 19
+[mashmap] Sketch size = 58
+[mashmap] Segment length = 1000 (read split allowed)
+[mashmap] Block length min = 5000
+[mashmap] Chaining gap max = 4000
+[mashmap] Mappings per segment = 1
+[mashmap] Percentage identity threshold = 90%
+[mashmap] Skip self mappings
+[mashmap] Skipping sequences containing the same prefix based on the delimiter "#"
+[mashmap] Hypergeometric filter w/ delta = 0.3 and confidence 0.999
+[mashmap] Mapping output file = /dev/stdout
+[mashmap] Filter mode = 1 (1 = map, 2 = one-to-one, 3 = none)
+[mashmap] Execution threads  = 8
+[mashmap::skch::Sketch::build] minmer windows picked from reference = 48299
+[mashmap::skch::Sketch::index] unique minmers = 1373
+[mashmap::skch::Sketch::computeFreqHist] Frequency histogram of minmer interval points = (2, 244) ... (628, 1)
+[mashmap::skch::Sketch::computeFreqHist] With threshold 0.001%, consider all minmers during lookup.
+[wfmash::map] time spent computing the reference index: 0.017679 sec
+[mashmap::skch::Map::mapQuery] mapped  -nan% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[mashmap::skch::Map::mapQuery] mapped  -nan% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[mashmap::skch::Map::mapQuery] count of mapped reads = 39, reads qualified for mapping = 40, total input reads = 40, total input bp = 0
+[wfmash::map] time spent mapping the query: 1.31e-01 sec
+[wfmash::map] mapping results saved in: /dev/stdout
+wfmash -s 1000 -l 5000 -p 90 -n 1 -k 19 -H 0.001 -Y # -t 8 --tmp-base results/graphs/pggb/pggb_out results/population/training.fa --lower-triangular --hg-filter-ani-diff 30 --approx-map
+2.02s user 0.01s system 1318% cpu 0.15s total 27008Kb max memory
+[mashmap] Skipping self mappings for single file all-vs-all mapping.
+[wfmash::align] Reference = [results/population/training.fa]
+[wfmash::align] Query = [results/population/training.fa]
+[wfmash::align] Mapping file = results/graphs/pggb/pggb_out/wfmash-K8YzhI
+[wfmash::align] Alignment identity cutoff = 72.00%
+[wfmash::align] Alignment output file = /dev/stdout
+[wfmash::align] time spent loading the reference index: 0.00 sec
+[wfmash::align::computeAlignments] aligned  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[wfmash::align::computeAlignments] aligned  0.79% @ 1.18e+05 bp/s elapsed: 00:00:00:00 remain: 00:00:01:02[wfmash::align::computeAlignments] aligned  1.59% @ 1.18e+05 bp/s elapsed: 00:00:00:01 remain: 00:00:01:02[wfmash::align::computeAlignments] aligned  3.71% @ 1.84e+05 bp/s elapsed: 00:00:00:01 remain: 00:00:00:38[wfmash::align::computeAlignments] aligned  5.85% @ 2.17e+05 bp/s elapsed: 00:00:00:02 remain: 00:00:00:32[wfmash::align::computeAlignments] aligned  8.12% @ 2.41e+05 bp/s elapsed: 00:00:00:02 remain: 00:00:00:28[wfmash::align::computeAlignments] aligned  9.56% @ 2.37e+05 bp/s elapsed: 00:00:00:03 remain: 00:00:00:28[wfmash::align::computeAlignments] aligned  9.83% @ 1.83e+05 bp/s elapsed: 00:00:00:04 remain: 00:00:00:36[wfmash::align::computeAlignments] aligned 10.36% @ 1.71e+05 bp/s elapsed: 00:00:00:04 remain: 00:00:00:38[wfmash::align::computeAlignments] aligned 10.89% @ 1.62e+05 bp/s elapsed: 00:00:00:05 remain: 00:00:00:40[wfmash::align::computeAlignments] aligned 11.55% @ 1.56e+05 bp/s elapsed: 00:00:00:05 remain: 00:00:00:42[wfmash::align::computeAlignments] aligned 12.31% @ 1.53e+05 bp/s elapsed: 00:00:00:06 remain: 00:00:00:42[wfmash::align::computeAlignments] aligned 14.31% @ 1.64e+05 bp/s elapsed: 00:00:00:06 remain: 00:00:00:38[wfmash::align::computeAlignments] aligned 15.77% @ 1.68e+05 bp/s elapsed: 00:00:00:07 remain: 00:00:00:37[wfmash::align::computeAlignments] aligned 17.21% @ 1.71e+05 bp/s elapsed: 00:00:00:07 remain: 00:00:00:36[wfmash::align::computeAlignments] aligned 17.89% @ 1.66e+05 bp/s elapsed: 00:00:00:08 remain: 00:00:00:36[wfmash::align::computeAlignments] aligned 18.83% @ 1.65e+05 bp/s elapsed: 00:00:00:08 remain: 00:00:00:36[wfmash::align::computeAlignments] aligned 21.25% @ 1.76e+05 bp/s elapsed: 00:00:00:09 remain: 00:00:00:33[wfmash::align::computeAlignments] aligned 21.76% @ 1.70e+05 bp/s elapsed: 00:00:00:09 remain: 00:00:00:34[wfmash::align::computeAlignments] aligned 22.57% @ 1.68e+05 bp/s elapsed: 00:00:00:10 remain: 00:00:00:34[wfmash::align::computeAlignments] aligned 23.24% @ 1.65e+05 bp/s elapsed: 00:00:00:10 remain: 00:00:00:34[wfmash::align::computeAlignments] aligned 24.31% @ 1.64e+05 bp/s elapsed: 00:00:00:11 remain: 00:00:00:34[wfmash::align::computeAlignments] aligned 24.98% @ 1.62e+05 bp/s elapsed: 00:00:00:11 remain: 00:00:00:34[wfmash::align::computeAlignments] aligned 25.39% @ 1.57e+05 bp/s elapsed: 00:00:00:12 remain: 00:00:00:35[wfmash::align::computeAlignments] aligned 25.91% @ 1.54e+05 bp/s elapsed: 00:00:00:12 remain: 00:00:00:35[wfmash::align::computeAlignments] aligned 26.32% @ 1.51e+05 bp/s elapsed: 00:00:00:13 remain: 00:00:00:36[wfmash::align::computeAlignments] aligned 26.57% @ 1.46e+05 bp/s elapsed: 00:00:00:13 remain: 00:00:00:37[wfmash::align::computeAlignments] aligned 27.19% @ 1.44e+05 bp/s elapsed: 00:00:00:14 remain: 00:00:00:37[wfmash::align::computeAlignments] aligned 27.73% @ 1.42e+05 bp/s elapsed: 00:00:00:14 remain: 00:00:00:37[wfmash::align::computeAlignments] aligned 28.00% @ 1.39e+05 bp/s elapsed: 00:00:00:15 remain: 00:00:00:38[wfmash::align::computeAlignments] aligned 28.68% @ 1.38e+05 bp/s elapsed: 00:00:00:15 remain: 00:00:00:38[wfmash::align::computeAlignments] aligned 29.03% @ 1.35e+05 bp/s elapsed: 00:00:00:16 remain: 00:00:00:39[wfmash::align::computeAlignments] aligned 29.57% @ 1.33e+05 bp/s elapsed: 00:00:00:16 remain: 00:00:00:39[wfmash::align::computeAlignments] aligned 30.10% @ 1.32e+05 bp/s elapsed: 00:00:00:17 remain: 00:00:00:39[wfmash::align::computeAlignments] aligned 30.91% @ 1.31e+05 bp/s elapsed: 00:00:00:17 remain: 00:00:00:39[wfmash::align::computeAlignments] aligned 31.58% @ 1.30e+05 bp/s elapsed: 00:00:00:18 remain: 00:00:00:39[wfmash::align::computeAlignments] aligned 32.12% @ 1.29e+05 bp/s elapsed: 00:00:00:18 remain: 00:00:00:39[wfmash::align::computeAlignments] aligned 33.60% @ 1.31e+05 bp/s elapsed: 00:00:00:19 remain: 00:00:00:37[wfmash::align::computeAlignments] aligned 34.67% @ 1.32e+05 bp/s elapsed: 00:00:00:19 remain: 00:00:00:36[wfmash::align::computeAlignments] aligned 35.34% @ 1.31e+05 bp/s elapsed: 00:00:00:20 remain: 00:00:00:36[wfmash::align::computeAlignments] aligned 35.61% @ 1.29e+05 bp/s elapsed: 00:00:00:20 remain: 00:00:00:37[wfmash::align::computeAlignments] aligned 36.28% @ 1.28e+05 bp/s elapsed: 00:00:00:21 remain: 00:00:00:36[wfmash::align::computeAlignments] aligned 36.69% @ 1.27e+05 bp/s elapsed: 00:00:00:21 remain: 00:00:00:37[wfmash::align::computeAlignments] aligned 37.23% @ 1.26e+05 bp/s elapsed: 00:00:00:22 remain: 00:00:00:37[wfmash::align::computeAlignments] aligned 37.36% @ 1.23e+05 bp/s elapsed: 00:00:00:22 remain: 00:00:00:37[wfmash::align::computeAlignments] aligned 37.77% @ 1.22e+05 bp/s elapsed: 00:00:00:23 remain: 00:00:00:37[wfmash::align::computeAlignments] aligned 38.31% @ 1.21e+05 bp/s elapsed: 00:00:00:23 remain: 00:00:00:37[wfmash::align::computeAlignments] aligned 38.82% @ 1.20e+05 bp/s elapsed: 00:00:00:24 remain: 00:00:00:37[wfmash::align::computeAlignments] aligned 39.75% @ 1.21e+05 bp/s elapsed: 00:00:00:24 remain: 00:00:00:37[wfmash::align::computeAlignments] aligned 40.64% @ 1.21e+05 bp/s elapsed: 00:00:00:25 remain: 00:00:00:36[wfmash::align::computeAlignments] aligned 41.27% @ 1.20e+05 bp/s elapsed: 00:00:00:25 remain: 00:00:00:36[wfmash::align::computeAlignments] aligned 42.32% @ 1.21e+05 bp/s elapsed: 00:00:00:26 remain: 00:00:00:35[wfmash::align::computeAlignments] aligned 43.64% @ 1.22e+05 bp/s elapsed: 00:00:00:26 remain: 00:00:00:34[wfmash::align::computeAlignments] aligned 44.72% @ 1.23e+05 bp/s elapsed: 00:00:00:27 remain: 00:00:00:33[wfmash::align::computeAlignments] aligned 45.25% @ 1.22e+05 bp/s elapsed: 00:00:00:27 remain: 00:00:00:33[wfmash::align::computeAlignments] aligned 46.14% @ 1.23e+05 bp/s elapsed: 00:00:00:28 remain: 00:00:00:32[wfmash::align::computeAlignments] aligned 46.62% @ 1.22e+05 bp/s elapsed: 00:00:00:28 remain: 00:00:00:32[wfmash::align::computeAlignments] aligned 46.89% @ 1.20e+05 bp/s elapsed: 00:00:00:29 remain: 00:00:00:32[wfmash::align::computeAlignments] aligned 47.55% @ 1.20e+05 bp/s elapsed: 00:00:00:29 remain: 00:00:00:32[wfmash::align::computeAlignments] aligned 47.95% @ 1.19e+05 bp/s elapsed: 00:00:00:30 remain: 00:00:00:32[wfmash::align::computeAlignments] aligned 48.62% @ 1.19e+05 bp/s elapsed: 00:00:00:30 remain: 00:00:00:32[wfmash::align::computeAlignments] aligned 49.56% @ 1.19e+05 bp/s elapsed: 00:00:00:31 remain: 00:00:00:31[wfmash::align::computeAlignments] aligned 50.23% @ 1.19e+05 bp/s elapsed: 00:00:00:31 remain: 00:00:00:31[wfmash::align::computeAlignments] aligned 50.63% @ 1.18e+05 bp/s elapsed: 00:00:00:32 remain: 00:00:00:31[wfmash::align::computeAlignments] aligned 51.57% @ 1.18e+05 bp/s elapsed: 00:00:00:32 remain: 00:00:00:30[wfmash::align::computeAlignments] aligned 52.51% @ 1.18e+05 bp/s elapsed: 00:00:00:33 remain: 00:00:00:29[wfmash::align::computeAlignments] aligned 53.03% @ 1.18e+05 bp/s elapsed: 00:00:00:33 remain: 00:00:00:29[wfmash::align::computeAlignments] aligned 53.94% @ 1.18e+05 bp/s elapsed: 00:00:00:34 remain: 00:00:00:29[wfmash::align::computeAlignments] aligned 54.60% @ 1.18e+05 bp/s elapsed: 00:00:00:34 remain: 00:00:00:28[wfmash::align::computeAlignments] aligned 55.53% @ 1.18e+05 bp/s elapsed: 00:00:00:35 remain: 00:00:00:28[wfmash::align::computeAlignments] aligned 56.52% @ 1.18e+05 bp/s elapsed: 00:00:00:35 remain: 00:00:00:27[wfmash::align::computeAlignments] aligned 57.06% @ 1.18e+05 bp/s elapsed: 00:00:00:36 remain: 00:00:00:27[wfmash::align::computeAlignments] aligned 58.25% @ 1.19e+05 bp/s elapsed: 00:00:00:36 remain: 00:00:00:26[wfmash::align::computeAlignments] aligned 59.83% @ 1.20e+05 bp/s elapsed: 00:00:00:37 remain: 00:00:00:24[wfmash::align::computeAlignments] aligned 60.17% @ 1.19e+05 bp/s elapsed: 00:00:00:37 remain: 00:00:00:24[wfmash::align::computeAlignments] aligned 60.98% @ 1.19e+05 bp/s elapsed: 00:00:00:38 remain: 00:00:00:24[wfmash::align::computeAlignments] aligned 61.25% @ 1.18e+05 bp/s elapsed: 00:00:00:38 remain: 00:00:00:24[wfmash::align::computeAlignments] aligned 61.60% @ 1.17e+05 bp/s elapsed: 00:00:00:39 remain: 00:00:00:24[wfmash::align::computeAlignments] aligned 62.01% @ 1.17e+05 bp/s elapsed: 00:00:00:39 remain: 00:00:00:24[wfmash::align::computeAlignments] aligned 62.41% @ 1.16e+05 bp/s elapsed: 00:00:00:40 remain: 00:00:00:24[wfmash::align::computeAlignments] aligned 62.68% @ 1.15e+05 bp/s elapsed: 00:00:00:40 remain: 00:00:00:24[wfmash::align::computeAlignments] aligned 63.09% @ 1.14e+05 bp/s elapsed: 00:00:00:41 remain: 00:00:00:24[wfmash::align::computeAlignments] aligned 63.76% @ 1.14e+05 bp/s elapsed: 00:00:00:41 remain: 00:00:00:23[wfmash::align::computeAlignments] aligned 64.93% @ 1.15e+05 bp/s elapsed: 00:00:00:42 remain: 00:00:00:22[wfmash::align::computeAlignments] aligned 66.46% @ 1.16e+05 bp/s elapsed: 00:00:00:42 remain: 00:00:00:21[wfmash::align::computeAlignments] aligned 67.67% @ 1.17e+05 bp/s elapsed: 00:00:00:43 remain: 00:00:00:20[wfmash::align::computeAlignments] aligned 68.97% @ 1.18e+05 bp/s elapsed: 00:00:00:43 remain: 00:00:00:19[wfmash::align::computeAlignments] aligned 69.10% @ 1.17e+05 bp/s elapsed: 00:00:00:44 remain: 00:00:00:19[wfmash::align::computeAlignments] aligned 71.23% @ 1.19e+05 bp/s elapsed: 00:00:00:44 remain: 00:00:00:17[wfmash::align::computeAlignments] aligned 72.15% @ 1.19e+05 bp/s elapsed: 00:00:00:45 remain: 00:00:00:17[wfmash::align::computeAlignments] aligned 73.83% @ 1.21e+05 bp/s elapsed: 00:00:00:45 remain: 00:00:00:16[wfmash::align::computeAlignments] aligned 75.54% @ 1.22e+05 bp/s elapsed: 00:00:00:46 remain: 00:00:00:14[wfmash::align::computeAlignments] aligned 76.48% @ 1.22e+05 bp/s elapsed: 00:00:00:46 remain: 00:00:00:14[wfmash::align::computeAlignments] aligned 77.00% @ 1.22e+05 bp/s elapsed: 00:00:00:47 remain: 00:00:00:14[wfmash::align::computeAlignments] aligned 79.21% @ 1.24e+05 bp/s elapsed: 00:00:00:47 remain: 00:00:00:12[wfmash::align::computeAlignments] aligned 80.52% @ 1.25e+05 bp/s elapsed: 00:00:00:48 remain: 00:00:00:11[wfmash::align::computeAlignments] aligned 81.17% @ 1.24e+05 bp/s elapsed: 00:00:00:48 remain: 00:00:00:11[wfmash::align::computeAlignments] aligned 82.10% @ 1.25e+05 bp/s elapsed: 00:00:00:49 remain: 00:00:00:10[wfmash::align::computeAlignments] aligned 84.38% @ 1.27e+05 bp/s elapsed: 00:00:00:49 remain: 00:00:00:09[wfmash::align::computeAlignments] aligned 85.70% @ 1.27e+05 bp/s elapsed: 00:00:00:50 remain: 00:00:00:08[wfmash::align::computeAlignments] aligned 86.22% @ 1.27e+05 bp/s elapsed: 00:00:00:50 remain: 00:00:00:08[wfmash::align::computeAlignments] aligned 87.43% @ 1.27e+05 bp/s elapsed: 00:00:00:51 remain: 00:00:00:07[wfmash::align::computeAlignments] aligned 88.63% @ 1.28e+05 bp/s elapsed: 00:00:00:51 remain: 00:00:00:06[wfmash::align::computeAlignments] aligned 90.22% @ 1.29e+05 bp/s elapsed: 00:00:00:52 remain: 00:00:00:05[wfmash::align::computeAlignments] aligned 91.02% @ 1.29e+05 bp/s elapsed: 00:00:00:52 remain: 00:00:00:05[wfmash::align::computeAlignments] aligned 91.81% @ 1.29e+05 bp/s elapsed: 00:00:00:53 remain: 00:00:00:04[wfmash::align::computeAlignments] aligned 93.95% @ 1.31e+05 bp/s elapsed: 00:00:00:53 remain: 00:00:00:03[wfmash::align::computeAlignments] aligned 94.86% @ 1.31e+05 bp/s elapsed: 00:00:00:54 remain: 00:00:00:02[wfmash::align::computeAlignments] aligned 95.67% @ 1.31e+05 bp/s elapsed: 00:00:00:54 remain: 00:00:00:02[wfmash::align::computeAlignments] aligned 95.81% @ 1.30e+05 bp/s elapsed: 00:00:00:55 remain: 00:00:00:02[wfmash::align::computeAlignments] aligned 96.35% @ 1.29e+05 bp/s elapsed: 00:00:00:55 remain: 00:00:00:02[wfmash::align::computeAlignments] aligned 96.62% @ 1.28e+05 bp/s elapsed: 00:00:00:56 remain: 00:00:00:01[wfmash::align::computeAlignments] aligned 96.89% @ 1.28e+05 bp/s elapsed: 00:00:00:56 remain: 00:00:00:01[wfmash::align::computeAlignments] aligned 97.16% @ 1.27e+05 bp/s elapsed: 00:00:00:57 remain: 00:00:00:01[wfmash::align::computeAlignments] aligned 97.56% @ 1.26e+05 bp/s elapsed: 00:00:00:57 remain: 00:00:00:01[wfmash::align::computeAlignments] aligned 97.97% @ 1.26e+05 bp/s elapsed: 00:00:00:58 remain: 00:00:00:01[wfmash::align::computeAlignments] aligned 98.24% @ 1.25e+05 bp/s elapsed: 00:00:00:58 remain: 00:00:00:01[wfmash::align::computeAlignments] aligned 98.78% @ 1.24e+05 bp/s elapsed: 00:00:00:59 remain: 00:00:00:00[wfmash::align::computeAlignments] aligned 98.92% @ 1.24e+05 bp/s elapsed: 00:00:00:59 remain: 00:00:00:00[wfmash::align::computeAlignments] aligned 99.73% @ 1.24e+05 bp/s elapsed: 00:00:01:00 remain: 00:00:00:00[wfmash::align::computeAlignments] aligned 100.00% @ 1.23e+05 bp/s elapsed: 00:00:01:00 remain: 00:00:00:00
+[wfmash::align::computeAlignments] count of mapped reads = 40, total aligned bp = 7440305
+[wfmash::align] time spent computing the alignment: 6.05e+01 sec
+[wfmash::align] alignment results saved in: /dev/stdout
+wfmash -s 1000 -l 5000 -p 90 -n 1 -k 19 -H 0.001 -Y # -t 8 --tmp-base results/graphs/pggb/pggb_out results/population/training.fa --lower-triangular --hg-filter-ani-diff 30 -i results/graphs/pggb/pggb_out/training.fa.ad2b792.mappings.wfmash.paf --invert-filtering
+468.15s user 17.32s system 801% cpu 60.54s total 685448Kb max memory
+[seqwish::seqidx] 0.002 indexing sequences
+[seqwish::seqidx] 0.012 index built
+[seqwish::alignments] 0.012 processing alignments
+[seqwish::alignments] 0.026 indexing
+[seqwish::alignments] 0.052 index built
+[seqwish::transclosure] 0.055 computing transitive closures
+[seqwish::transclosure] 0.059 0.00% 0-400205 overlap_collect
+[seqwish::transclosure] 0.219 0.00% 0-400205 rank_build
+[seqwish::transclosure] 0.225 0.00% 0-400205 parallel_union_find
+[seqwish::transclosure] 0.249 0.00% 0-400205 dset_write
+[seqwish::transclosure] 0.254 0.00% 0-400205 dset_compression
+[seqwish::transclosure] 0.259 0.00% 0-400205 dset_sort
+[seqwish::transclosure] 0.260 0.00% 0-400205 dset_invert
+[seqwish::transclosure] 0.263 0.00% 0-400205 graph_emission
+[seqwish::transclosure] 0.305 100.00% building node_iitree and path_iitree indexes
+[seqwish::transclosure] 0.334 100.00% done
+[seqwish::transclosure] 0.334 done with transitive closures
+[seqwish::compact] 0.334 compacting nodes
+[seqwish::compact] 0.339 done compacting
+[seqwish::compact] 0.339 built node index
+[seqwish::links] 0.339 finding graph links
+[seqwish::links] 0.376 links derived
+[seqwish::gfa] 0.376 writing graph
+[seqwish::gfa] 0.394 done
+seqwish -s results/population/training.fa -p results/graphs/pggb/pggb_out/training.fa.ad2b792.alignments.wfmash.paf -k 23 -f 0 -g results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.seqwish.gfa -B 10M -t 8 --temp-dir results/graphs/pggb/pggb_out -P
+0.94s user 0.09s system 260% cpu 0.39s total 51096Kb max memory
+[smoothxg::(1-2)::main] loading graph
+[smoothxg::(1-2)::main] prepping graph for smoothing
+[odgi::gfa_to_handle] building nodes:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building nodes:  2.90% @ 2.55e+05 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building nodes: 100.00% @ 1.93e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::gfa_to_handle] building edges:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building edges: 100.00% @ 2.97e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::gfa_to_handle] building paths:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building paths: 100.00% @ 7.99e+01 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(1-2)::prep] building path index
+[smoothxg::(1-2)::prep] path_sgd_zipf_space_max: 100
+[smoothxg::(1-2)::prep] path_sgd_zipf_max_number_of_distributions: 101
+[smoothxg::(1-2)::prep] sorting graph
+[odgi::path_linear_sgd] 1D path-guided SGD:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::path_linear_sgd] calculating linear SGD schedule (2.95e-07 1.00e+00 100 0 1.00e-02)
+[odgi::path_linear_sgd] calculating zetas for 102 zipf distributions
+[odgi::path_linear_sgd] 1D path-guided SGD: 100.00% @ 1.29e+07 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::groom] grooming: 100.00% @ 5.77e+06 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::groom] grooming: 100.00% @ 2.50e+06 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::groom] organizing handles: 100.00% @ 8.68e+06 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::groom] organizing handles: 100.00% @ 2.97e+06 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::groom] flipped 82 handles
+[odgi::topological_order] sorting nodes:  3.42% @ 5.33e+04 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::topological_order] sorting nodes:  3.93% @ 9.79e+04 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::topological_order] sorting nodes: 100.00% @ 1.93e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(1-2)::prep] chopping graph to 100
+[odgi::chop] 29 node(s) to chop.
+[smoothxg::(1-2)::prep] writing graph results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.seqwish.gfa.prep.0.gfa
+[smoothxg::(1-2)::main] building xg index
+[smoothxg::(1-2)::smoothable_blocks] computing blocks for 1021 handles:  3.33% @ 5.53e+04 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(1-2)::smoothable_blocks] computing blocks for 1021 handles:  5.09% @ 5.16e+05 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(1-2)::smoothable_blocks] computing blocks for 1021 handles: 100.00% @ 2.04e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(1-2)::break_and_split_blocks] cutting blocks that contain sequences longer than max-poa-length (1400) and depth >= 0
+[smoothxg::(1-2)::break_and_split_blocks] splitting 52 blocks at identity 0.900 (WFA-based clustering) and at estimated-identity 0.900 (mash-based clustering)
+[smoothxg::(1-2)::break_and_split_blocks] cutting and splitting 52 blocks:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(1-2)::break_and_split_blocks] cutting and splitting 52 blocks: 100.00% @ 1.04e+02 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(1-2)::break_and_split_blocks] cut 0 blocks of which 0 had repeats
+[smoothxg::(1-2)::break_and_split_blocks] split 0 blocks
+[smoothxg::(1-2)::smooth_and_lace] applying local SPOA to 52 blocks:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(1-2)::smooth_and_lace] applying local SPOA to 52 blocks:  9.62% @ 9.99e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:04[smoothxg::(1-2)::smooth_and_lace] applying local SPOA to 52 blocks: 13.46% @ 6.99e+00 bp/s elapsed: 00:00:00:01 remain: 00:00:00:06[smoothxg::(1-2)::smooth_and_lace] applying local SPOA to 52 blocks: 15.38% @ 5.33e+00 bp/s elapsed: 00:00:00:01 remain: 00:00:00:08[smoothxg::(1-2)::smooth_and_lace] applying local SPOA to 52 blocks: 28.85% @ 7.49e+00 bp/s elapsed: 00:00:00:02 remain: 00:00:00:04[smoothxg::(1-2)::smooth_and_lace] applying local SPOA to 52 blocks: 46.15% @ 9.59e+00 bp/s elapsed: 00:00:00:02 remain: 00:00:00:02[smoothxg::(1-2)::smooth_and_lace] applying local SPOA to 52 blocks: 53.85% @ 9.33e+00 bp/s elapsed: 00:00:00:03 remain: 00:00:00:02[smoothxg::(1-2)::smooth_and_lace] applying local SPOA to 52 blocks: 63.46% @ 9.42e+00 bp/s elapsed: 00:00:00:03 remain: 00:00:00:02[smoothxg::(1-2)::smooth_and_lace] applying local SPOA to 52 blocks: 90.38% @ 1.17e+01 bp/s elapsed: 00:00:00:04 remain: 00:00:00:00[smoothxg::(1-2)::smooth_and_lace] applying local SPOA to 52 blocks: 94.23% @ 1.09e+01 bp/s elapsed: 00:00:00:04 remain: 00:00:00:00[smoothxg::(1-2)::smooth_and_lace] applying local SPOA to 52 blocks: 100.00% @ 1.04e+01 bp/s elapsed: 00:00:00:05 remain: 00:00:00:00
+[smoothxg::(1-2)::smooth_and_lace] flipping 0 block graphs
+[smoothxg::(1-2)::smooth_and_lace] indexing sequences
+[smoothxg::(1-2)::smooth_and_lace] sorting path fragments
+[smoothxg::(1-2)::smooth_and_lace] sorted 5626 path fragments
+[smoothxg::(1-2)::smooth_and_lace] loading 52 graph blocks:  3.85% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(1-2)::smooth_and_lace] loading 52 graph blocks:  3.85% @ 7.36e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(1-2)::smooth_and_lace] loading 52 graph blocks: 100.00% @ 1.04e+02 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(1-2)::smooth_and_lace] adding nodes and edges from 52 graphs:  1.92% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(1-2)::smooth_and_lace] adding nodes and edges from 52 graphs:  1.92% @ 2.38e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(1-2)::smooth_and_lace] adding nodes and edges from 52 graphs: 100.00% @ 1.04e+02 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(1-2)::smooth_and_lace] embedding 5626 path fragments:  0.02% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(1-2)::smooth_and_lace] embedding 5626 path fragments:  0.02% @ 3.38e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:01[smoothxg::(1-2)::smooth_and_lace] embedding 5626 path fragments: 100.00% @ 1.12e+04 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(1-2)::smooth_and_lace] validating 40 path sequences:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(1-2)::smooth_and_lace] validating 40 path sequences: 100.00% @ 7.99e+01 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(1-2)::smooth_and_lace] walking edges in 40 paths:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(1-2)::smooth_and_lace] walking edges in 40 paths: 100.00% @ 7.99e+01 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(1-2)::main] unchopping smoothed graph
+[odgi::unchop] unchopped 182 nodes into 55 new nodes.
+[smoothxg::(1-2)::main] smoothed graph length 18767bp in 2130 nodes
+[smoothxg::(1-2)::main] writing smoothed graph to results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.seqwish.gfa.smooth.0.gfa
+[smoothxg::(2-2)::main] loading graph
+[smoothxg::(2-2)::main] prepping graph for smoothing
+[odgi::gfa_to_handle] building nodes:  0.42% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building nodes:  3.38% @ 7.43e+05 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building nodes: 100.00% @ 4.26e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::gfa_to_handle] building edges: 13.40% @ 1.50e+06 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building edges: 14.81% @ 1.79e+06 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building edges: 100.00% @ 6.11e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::gfa_to_handle] building paths:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building paths: 100.00% @ 7.99e+01 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(2-2)::prep] building path index
+[smoothxg::(2-2)::prep] path_sgd_zipf_space_max: 100
+[smoothxg::(2-2)::prep] path_sgd_zipf_max_number_of_distributions: 101
+[smoothxg::(2-2)::prep] sorting graph
+[odgi::path_linear_sgd] 1D path-guided SGD:  0.00% @ 0.00e+00 bp/s elapsed: [odgi::path_linear_sgd] calculating linear SGD schedule (3.20e-07 1.00e+00 100 0 1.00e-02)
+00:00:00:00 remain: 00:00:00:00[odgi::path_linear_sgd] calculating zetas for 102 zipf distributions
+[odgi::path_linear_sgd] 1D path-guided SGD: 100.00% @ 1.27e+07 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::groom] grooming: 16.06% @ 9.15e+05 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::groom] grooming: 20.66% @ 1.54e+06 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::groom] grooming: 100.00% @ 4.26e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::groom] organizing handles: 100.00% @ 1.15e+07 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::groom] organizing handles: 100.00% @ 6.91e+06 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::groom] flipped 70 handles
+[odgi::topological_order] sorting nodes:  2.11% @ 8.96e+04 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::topological_order] sorting nodes:  2.44% @ 1.20e+05 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::topological_order] sorting nodes: 100.00% @ 4.25e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(2-2)::prep] chopping graph to 100
+[odgi::chop] 34 node(s) to chop.
+[smoothxg::(2-2)::prep] writing graph results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.seqwish.gfa.smooth.0.gfa.prep.1.gfa
+[smoothxg::(2-2)::main] building xg index
+[smoothxg::(2-2)::smoothable_blocks] computing blocks for 2191 handles:  7.53% @ 6.74e+05 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(2-2)::smoothable_blocks] computing blocks for 2191 handles:  7.53% @ 5.44e+05 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(2-2)::smoothable_blocks] computing blocks for 2191 handles: 100.00% @ 4.38e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(2-2)::break_and_split_blocks] cutting blocks that contain sequences longer than max-poa-length (2200) and depth >= 0
+[smoothxg::(2-2)::break_and_split_blocks] splitting 26 blocks at identity 0.900 (WFA-based clustering) and at estimated-identity 0.900 (mash-based clustering)
+[smoothxg::(2-2)::break_and_split_blocks] cutting and splitting 26 blocks:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(2-2)::break_and_split_blocks] cutting and splitting 26 blocks: 100.00% @ 5.20e+01 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(2-2)::break_and_split_blocks] cut 0 blocks of which 0 had repeats
+[smoothxg::(2-2)::break_and_split_blocks] split 0 blocks
+[smoothxg::(2-2)::smooth_and_lace] applying local SPOA to 26 blocks:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(2-2)::smooth_and_lace] applying local SPOA to 26 blocks: 19.23% @ 9.99e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:02[smoothxg::(2-2)::smooth_and_lace] applying local SPOA to 26 blocks: 46.15% @ 1.20e+01 bp/s elapsed: 00:00:00:01 remain: 00:00:00:01[smoothxg::(2-2)::smooth_and_lace] applying local SPOA to 26 blocks: 84.62% @ 1.47e+01 bp/s elapsed: 00:00:00:01 remain: 00:00:00:00[smoothxg::(2-2)::smooth_and_lace] applying local SPOA to 26 blocks: 92.31% @ 1.20e+01 bp/s elapsed: 00:00:00:02 remain: 00:00:00:00[smoothxg::(2-2)::smooth_and_lace] applying local SPOA to 26 blocks: 100.00% @ 1.04e+01 bp/s elapsed: 00:00:00:02 remain: 00:00:00:00
+[smoothxg::(2-2)::smooth_and_lace] flipping 0 block graphs
+[smoothxg::(2-2)::smooth_and_lace] indexing sequences
+[smoothxg::(2-2)::smooth_and_lace] sorting path fragments
+[smoothxg::(2-2)::smooth_and_lace] sorted 1998 path fragments
+[smoothxg::(2-2)::smooth_and_lace] loading 26 graph blocks:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(2-2)::smooth_and_lace] loading 26 graph blocks: 100.00% @ 5.19e+01 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(2-2)::smooth_and_lace] adding nodes and edges from 26 graphs:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(2-2)::smooth_and_lace] adding nodes and edges from 26 graphs: 100.00% @ 5.19e+01 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(2-2)::smooth_and_lace] embedding 1998 path fragments:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(2-2)::smooth_and_lace] embedding 1998 path fragments: 100.00% @ 3.99e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(2-2)::smooth_and_lace] validating 40 path sequences:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(2-2)::smooth_and_lace] validating 40 path sequences: 100.00% @ 7.98e+01 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(2-2)::smooth_and_lace] walking edges in 40 paths:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[smoothxg::(2-2)::smooth_and_lace] walking edges in 40 paths: 100.00% @ 7.99e+01 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[smoothxg::(2-2)::main] unchopping smoothed graph
+[odgi::unchop] unchopped 74 nodes into 26 new nodes.
+[smoothxg::(2-2)::main] smoothed graph length 18251bp in 2230 nodes
+[smoothxg::(2-2)::main] writing smoothed graph to results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.gfa
+smoothxg -t 8 -T 8 -g results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.seqwish.gfa -r 40 --base results/graphs/pggb/pggb_out --chop-to 100 -I .9000 -R 0 -j 0 -e 0 -l 700,1100 -p 1,4,6,2,26,1 -O 0.001 -Y 4000 -d 0 -D 0 -Q Consensus_ -V -o results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.gfa
+51.44s user 2.82s system 263% cpu 20.59s total 469312Kb max memory
+[2026-08-21T06:54:28Z INFO  gfaffix] running gfaffix on 1 threads
+[2026-08-21T06:54:28Z INFO  gfaffix] loading graph from results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.gfa
+[2026-08-21T06:54:28Z INFO  gfaffix] constructing handle graph
+[2026-08-21T06:54:28Z INFO  gfaffix] handlegraph has 2230 nodes and 3192 edges
+[2026-08-21T06:54:28Z INFO  gfaffix] storing length of original nodes for bookkeeping
+[2026-08-21T06:54:28Z INFO  gfaffix] identifying walk-preserving shared affixes
+[2026-08-21T06:54:28Z INFO  gfaffix] found and collapsed 62 shared prefixes, 21 of which are overlapping, and 10 of which are bubbles
+[2026-08-21T06:54:28Z INFO  gfaffix] identifying walk-preserving blunt ends
+[2026-08-21T06:54:28Z INFO  gfaffix] found and collapsed 0 blunt ends
+[2026-08-21T06:54:28Z INFO  gfaffix] expand transformation table
+[2026-08-21T06:54:28Z INFO  gfaffix] writing refined graph to results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.fix.gfa
+[2026-08-21T06:54:28Z INFO  gfaffix] transforming paths+walks
+[2026-08-21T06:54:28Z INFO  gfaffix] done
+gfaffix results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.gfa -o results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.fix.gfa
+0.00s user 0.00s system 66% cpu 0.01s total 7040Kb max memory
+pigz
+0.00s user 0.00s system 5% cpu 0.01s total 2400Kb max memory
+[odgi::gfa_to_handle] building nodes:  0.04% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building nodes:  0.04% @ 8.17e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building nodes: 100.00% @ 4.44e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::gfa_to_handle] building edges:  0.25% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building edges:  0.97% @ 6.89e+04 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building edges: 100.00% @ 6.34e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::gfa_to_handle] building paths:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::gfa_to_handle] building paths: 100.00% @ 7.98e+01 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+odgi build -t 8 -P -g results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.fix.gfa -o - -O
+0.07s user 0.00s system 5% cpu 1.51s total 12604Kb max memory
+[odgi::unchop] unchopped 26 nodes into 12 new nodes.
+odgi unchop -P -t 8 -i - -o -
+0.07s user 0.00s system 4% cpu 1.54s total 13064Kb max memory
+path_sgd_zipf_space_max: 100
+path_sgd_zipf_max_number_of_distributions: 101
+[odgi::path_linear_sgd] calculating linear SGD schedule (2.56629e-07 1 100 0 0.01)
+[odgi::path_linear_sgd] calculating zetas for 102 zipf distributions
+[odgi::path_linear_sgd] 1D path-guided SGD:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::path_linear_sgd] 1D path-guided SGD: 100.00% @ 1.41e+07 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::groom] grooming: 19.19% @ 7.88e+05 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::groom] grooming: 23.08% @ 1.82e+06 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::groom] grooming: 100.00% @ 4.41e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::groom] organizing handles: 84.66% @ 3.77e+06 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::groom] organizing handles: 100.00% @ 5.45e+06 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+[odgi::groom] flipped 0 handles
+[odgi::topological_order] sorting nodes:  1.72% @ 8.53e+04 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::topological_order] sorting nodes:  2.04% @ 1.62e+05 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::topological_order] sorting nodes: 100.00% @ 4.41e+03 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00
+odgi sort -P -p Ygs --temp-dir results/graphs/pggb/pggb_out -t 8 -i - -o results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og
+2.39s user 0.03s system 78% cpu 3.11s total 22080Kb max memory
+odgi view -i results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og -g
+0.01s user 0.00s system 93% cpu 0.01s total 9600Kb max memory
+odgi viz -i results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og -o results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og.viz_multiqc.png -x 1500 -y 500 -a 10 -I Consensus_
+0.05s user 0.00s system 96% cpu 0.05s total 21600Kb max memory
+odgi viz -i results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og -o results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og.viz_pos_multiqc.png -x 1500 -y 500 -a 10 -u -d -I Consensus_
+0.03s user 0.01s system 98% cpu 0.05s total 21760Kb max memory
+odgi viz -i results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og -o results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og.viz_depth_multiqc.png -x 1500 -y 500 -a 10 -m -I Consensus_
+0.04s user 0.00s system 91% cpu 0.06s total 20480Kb max memory
+odgi viz -i results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og -o results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og.viz_inv_multiqc.png -x 1500 -y 500 -a 10 -z -I Consensus_
+0.04s user 0.00s system 97% cpu 0.04s total 20160Kb max memory
+odgi viz -i results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og -o results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og.viz_O_multiqc.png -x 1500 -y 500 -a 10 -O -I Consensus_
+0.02s user 0.00s system 96% cpu 0.02s total 15040Kb max memory
+odgi viz -i results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og -o results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og.viz_uncalled_multiqc.png -x 1500 -y 500 -a 10 -N -I Consensus_
+0.04s user 0.00s system 97% cpu 0.04s total 20160Kb max memory
+[odgi::path_linear_sgd_layout] 2D path-guided SGD:  0.00% @ 0.00e+00 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::path_linear_sgd_layout] 2D path-guided SGD: 77.35% @ 3.28e+07 bp/s elapsed: 00:00:00:00 remain: 00:00:00:00[odgi::path_linear_sgd_layout] 2D path-guided SGD: 100.00% @ 2.12e+07 bp/s elapsed: 00:00:00:01 remain: 00:00:00:00
+odgi layout -i results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og -o results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og.lay -T results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og.lay.tsv -t 8 --temp-dir results/graphs/pggb/pggb_out -P
+5.40s user 0.03s system 510% cpu 1.06s total 21920Kb max memory
+odgi draw -i results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og -c results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og.lay -p results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og.lay.draw.png -H 1000
+0.06s user 0.00s system 96% cpu 0.06s total 24800Kb max memory
+odgi draw -i results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og -c results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og.lay -p results/graphs/pggb/pggb_out/training.fa.ad2b792.11fba48.21ed608.smooth.final.og.lay.draw_multiqc.png -C -w 20 -H 1000
+0.13s user 0.00s system 100% cpu 0.13s total 27200Kb max memory

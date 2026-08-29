@@ -1,0 +1,23 @@
+{
+  "mode": "auto",
+  "selection_reason": "branch_repeat_neighborhood_trimmed",
+  "nodes": [
+    "s24",
+    "s56",
+    "s57",
+    "s58",
+    "s59",
+    "s60",
+    "s92",
+    "s94",
+    "s95",
+    "s97"
+  ],
+  "node_count": 10,
+  "edge_count": 11,
+  "branch_nodes": [
+    "s56",
+    "s58"
+  ],
+  "cycle_rank": 2
+}

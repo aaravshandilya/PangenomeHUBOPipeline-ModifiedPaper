@@ -1,0 +1,28 @@
+{
+  "mode": "auto",
+  "selection_reason": "branch_repeat_neighborhood_trimmed",
+  "nodes": [
+    "1228",
+    "1229",
+    "1232",
+    "1234",
+    "1235",
+    "1237",
+    "1240",
+    "1241",
+    "1242",
+    "1243"
+  ],
+  "node_count": 10,
+  "edge_count": 17,
+  "branch_nodes": [
+    "1229",
+    "1232",
+    "1235",
+    "1237",
+    "1240",
+    "1241",
+    "1242"
+  ],
+  "cycle_rank": 8
+}

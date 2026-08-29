@@ -1,0 +1,128 @@
+{
+  "valid": true,
+  "random_tests": 250,
+  "maximum_absolute_error": 2.7284841053187847e-12,
+  "tolerance": 1e-08,
+  "binary_variable_count": 80,
+  "examples": [
+    {
+      "polynomial_energy": 668.7367849572606,
+      "direct_energy": 668.7367849572603,
+      "absolute_error": 3.410605131648481e-13,
+      "states": [
+        5,
+        2,
+        6,
+        2,
+        2,
+        6,
+        17,
+        16,
+        31,
+        1,
+        31,
+        20,
+        6,
+        31,
+        12,
+        30
+      ]
+    },
+    {
+      "polynomial_energy": 761.4516401232595,
+      "direct_energy": 761.4516401232603,
+      "absolute_error": 7.958078640513122e-13,
+      "states": [
+        13,
+        18,
+        28,
+        28,
+        30,
+        1,
+        16,
+        6,
+        7,
+        31,
+        6,
+        4,
+        1,
+        2,
+        29,
+        25
+      ]
+    },
+    {
+      "polynomial_energy": 768.7048486492606,
+      "direct_energy": 768.7048486492604,
+      "absolute_error": 2.2737367544323206e-13,
+      "states": [
+        7,
+        14,
+        4,
+        13,
+        5,
+        18,
+        25,
+        29,
+        1,
+        21,
+        6,
+        21,
+        29,
+        0,
+        26,
+        0
+      ]
+    },
+    {
+      "polynomial_energy": 659.7297078612607,
+      "direct_energy": 659.7297078612603,
+      "absolute_error": 4.547473508864641e-13,
+      "states": [
+        2,
+        21,
+        19,
+        3,
+        1,
+        18,
+        1,
+        9,
+        22,
+        11,
+        21,
+        19,
+        4,
+        21,
+        12,
+        28
+      ]
+    },
+    {
+      "polynomial_energy": 768.6705265832607,
+      "direct_energy": 768.6705265832603,
+      "absolute_error": 3.410605131648481e-13,
+      "states": [
+        13,
+        29,
+        14,
+        16,
+        9,
+        23,
+        5,
+        5,
+        17,
+        26,
+        1,
+        2,
+        27,
+        22,
+        16,
+        26
+      ]
+    }
+  ],
+  "exhaustive": {
+    "performed": false,
+    "reason": "q=80 exceeds exhaustive_limit=18"
+  }
+}

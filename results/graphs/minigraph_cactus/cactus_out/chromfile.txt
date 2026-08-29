@@ -1,0 +1,1 @@
+all	file:///home/aarav/projects/PangenomeHUBOPipeline-ModifiedPaper/results/graphs/minigraph_cactus/cactus_out/seqfile.txt	file:///home/aarav/projects/PangenomeHUBOPipeline-ModifiedPaper/results/graphs/minigraph_cactus/cactus_out/graph.paf
