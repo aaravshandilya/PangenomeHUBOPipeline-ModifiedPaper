@@ -126,7 +126,7 @@ rule build_minigraph_cactus:
         cactus-pangenome "$jobstore" {input.seqfile} \
             --outDir "$outdir" --outName graph --reference "$ref" \
             --gfa full --mgCores {threads} {params.args}
-        gfa=$(find "$outdir" -type f \( -name '*.full.gfa' -o -name '*.full.gfa.gz' \) | head -1)
+        gfa=$(find "$outdir" -type f -regextype posix-extended -regex '.*\.full\.gfa(\.gz)?$' | head -1)
         test -n "$gfa"
         if [[ "$gfa" == *.gz ]]; then gzip -dc "$gfa" > {output}; else cp "$gfa" {output}; fi
         """
