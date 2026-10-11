@@ -1,0 +1,141 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[margin=0.75in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,booktabs,amsmath}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\title{\vspace{-1.8em}HUBO Degree Reduction for Pangenome-Guided Assembly\\
+\large Concise Results Summary}
+\author{Aarav Shandilya}
+\date{}
+\begin{document}
+\maketitle
+\vspace{-1.5em}
+\section*{Purpose and scope}
+The reported experiments reduce eighth-order higher-order unconstrained binary
+optimisation (HUBO) models to maximum degree six (D6) or five (D5).
+Three graph methods---Minigraph, Minigraph-Cactus, and PGGB---are compared at
+12, 16, and 20 original binary variables, giving 18 configurations.
+The results below are transcribed from the supplied presentation
+(slides 2--7) \cite{slides}; they are not a new execution of the pipeline.
+The background paper motivates the broader trade-off between compact HUBO
+encodings and quantum circuit complexity \cite{cudby}.
+
+\section*{Computational results}
+Reduction decreases the largest number of variables interacting in a term,
+but introduces auxiliary binary variables. The same variable counts are
+reported for all three graph methods.
+\begin{center}
+\small
+\begin{tabular}{rrrrrr}
+\toprule
+Original variables & Degree change & Auxiliaries & Total variables & Overhead & Space multiplier\\
+\midrule
+12 & $8\to6$ & 3 & 15 & 25.0\% & $8\times$\\
+12 & $8\to5$ & 5 & 17 & 41.7\% & $32\times$\\
+16 & $8\to6$ & 4 & 20 & 25.0\% & $16\times$\\
+16 & $8\to5$ & 7 & 23 & 43.8\% & $128\times$\\
+20 & $8\to6$ & 5 & 25 & 25.0\% & $32\times$\\
+20 & $8\to5$ & 9 & 29 & 45.0\% & $512\times$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\textbf{Scaling explanation.}
+For $q$ original variables and $a$ auxiliaries, the number of possible binary
+assignments increases from $2^q$ to $2^{q+a}$, a factor of $2^a$.
+These multipliers are calculated from the reported variable counts;
+they are not measured runtime increases. Full statevector storage also
+scales as $2^{q+a}$, although other solvers need not store every state.
+At 20 original variables, D5 has $2^{29-25}=16$ times as many assignments
+as D6. D6 therefore has lower variable overhead throughout the tested sizes.
+
+\section*{Main biological findings}
+Fifteen of the 18 configurations have no reported change in identity,
+mismatches, insertions, or deletions. The three exceptions improve identity:
+\begin{itemize}
+\setlength{\itemsep}{0pt}
+\item \textbf{Minigraph, 16 variables, D5:} identity increases by 4.64 percentage
+points, with 33 fewer mismatches and two fewer deletions, but one additional insertion.
+\item \textbf{PGGB and Minigraph-Cactus, 16 variables, D6:} each improves identity
+by 0.25 percentage points, with two fewer mismatches and no insertion/deletion change.
+\end{itemize}
+No displayed configuration loses identity, but neither degree consistently
+improves it. These results concern changes in the reported sequence metrics;
+unchanged metrics alone do not prove that the decoded sequence or graph walk is identical.
+
+\textbf{Simple explanation.}
+Think of a genome as an essay assembled from linked sentences. Reduction
+simplifies the rules connecting the sentences, but adds extra bookkeeping
+choices. Most reported essays retain the same accuracy; three improve.
+More bookkeeping can make searching for the best essay harder.
+
+\newpage
+\section*{Complete biological comparison}
+All changes are reduced minus unreduced. Identity is in percentage points
+(pp); negative mismatch, insertion, or deletion changes mean fewer reported
+errors. The presentation does not specify whether insertion/deletion counts
+represent events or affected bases, so that unit is left unspecified here.
+Original denotes the original binary-variable count, labelled Qubits
+in the slides; it is not evidence of a hardware run.
+\begin{center}
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{llrrrrr}
+\toprule
+Method & Target & Original & $\Delta$ Identity (pp) & $\Delta$ Mismatch & $\Delta$ Insertion & $\Delta$ Deletion\\
+\midrule
+Minigraph & D6 & 12 & 0.00 & 0 & 0 & 0\\
+Minigraph & D5 & 12 & 0.00 & 0 & 0 & 0\\
+Minigraph & D6 & 16 & 0.00 & 0 & 0 & 0\\
+Minigraph & D5 & 16 & +4.64 & $-33$ & +1 & $-2$\\
+Minigraph & D6 & 20 & 0.00 & 0 & 0 & 0\\
+Minigraph & D5 & 20 & 0.00 & 0 & 0 & 0\\
+\midrule
+Minigraph-Cactus & D6 & 12 & 0.00 & 0 & 0 & 0\\
+Minigraph-Cactus & D5 & 12 & 0.00 & 0 & 0 & 0\\
+Minigraph-Cactus & D6 & 16 & +0.25 & $-2$ & 0 & 0\\
+Minigraph-Cactus & D5 & 16 & 0.00 & 0 & 0 & 0\\
+Minigraph-Cactus & D6 & 20 & 0.00 & 0 & 0 & 0\\
+Minigraph-Cactus & D5 & 20 & 0.00 & 0 & 0 & 0\\
+\midrule
+PGGB & D6 & 12 & 0.00 & 0 & 0 & 0\\
+PGGB & D5 & 12 & 0.00 & 0 & 0 & 0\\
+PGGB & D6 & 16 & +0.25 & $-2$ & 0 & 0\\
+PGGB & D5 & 16 & 0.00 & 0 & 0 & 0\\
+PGGB & D6 & 20 & 0.00 & 0 & 0 & 0\\
+PGGB & D5 & 20 & 0.00 & 0 & 0 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{Interpretation and next steps}
+The displayed results support preservation of the measured assembly accuracy
+in most configurations, with occasional improvement. D6 uses fewer
+auxiliaries; D5 offers a lower maximum interaction degree but a larger search
+space. These tables alone do not establish which degree is faster, requires
+shallower circuits, or performs better on quantum hardware. Improvement
+in sampled solutions also does not, by itself, prove mathematical equivalence
+of the reduced and original objectives.
+
+The supplied comparison lacks absolute identity values, coverage, assembly
+break counts, timings, circuit statistics, and repeated-run uncertainty.
+Accordingly, it cannot establish complete genome reconstruction or a
+statistically reliable advantage. The next useful checks are to validate
+legal graph walks and auxiliary consistency, compare decoded sequences
+against ground truth, and measure runtime and circuit resources across
+repeated runs before assessing IonQ hardware performance.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{slides}
+A.~Shandilya, \emph{Pangenome-Guided Genome Assembly: Sixth-Order HUBO
+Reduction and Biological Validation}, supplied presentation,
+\emph{Copy of HUBO Reduction - IonQ Presentation(1).pdf}, slides 2--8.
+\bibitem{cudby}
+J.~Cudby and S.~Strelchuk, \emph{Nonvariational quantum optimisation
+approaches to pangenome-guided sequence assembly},
+arXiv:2604.06106v1, 2026. Supplied PDF: \emph{NonVariational .pdf}.
+\url{https://arxiv.org/abs/2604.06106}
+\end{thebibliography}
+\end{document}
